@@ -1,39 +1,57 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Button } from "@/components/ui/Auth-ui/button"
-import { Input } from "@/components/ui/Auth-ui/input"
-import { Label } from "@/components/ui/Auth-ui/label"
-import { Checkbox } from "@/components/ui/Auth-ui/checkbox"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Auth-ui/tabs"
-import { Linkedin, Github, Twitter, Mail, Lock, User, Briefcase, Phone, Eye, EyeOff } from 'lucide-react'
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Button } from "@/components/ui/Auth-ui/button";
+import { Input } from "@/components/ui/Auth-ui/input";
+import { Label } from "@/components/ui/Auth-ui/label";
+import { Checkbox } from "@/components/ui/Auth-ui/checkbox";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Auth-ui/tabs";
+import { Linkedin, Github, Twitter, Mail, Lock, User, Phone, Eye, EyeOff } from 'lucide-react';
+import axios from 'axios';
+import { useForm } from 'react-hook-form';
 
 export default function LinkedinAuth() {
-  const [isLogin, setIsLogin] = useState(true)
-  const [showPassword, setShowPassword] = useState(false)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [fullName, setFullName] = useState('')
-  const [headline, setHeadline] = useState('')
+  const [isLogin, setIsLogin] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
   useEffect(() => {
     // Simulating loading of user preferences
     const timer = setTimeout(() => {
-      setEmail('user@example.com')
-    }, 1000)
+      // Simulate setting default values if needed
+    }, 1000);
     return () => clearTimeout(timer);
-  }, [])
+  }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    // Simulating form submission
-    console.log('Form submitted:', { email, password, fullName, headline })
-  }
+  const onSubmit = async (data) => {
+    setErrorMessage(''); // Reset the error message
+    // console.log(data);
+    
+    try {
+      const payload = {
+        email: data.email,
+        password: data.password,
+        fullName: isLogin ? undefined : data.fullName, // Include fullName only for signup
+      };
+
+      const response = await axios.post('/api/signup', payload);
+      console.log('Form submitted:', response.data);
+      // Handle successful signup/login (e.g., redirect or show success message)
+    } catch (error) {
+      if (error.response) {
+        setErrorMessage(error.response.data.message || 'An error occurred. Please try again.');
+      } else {
+        setErrorMessage('An unexpected error occurred. Please try again later.');
+      }
+      console.error('Error submitting form:', error);
+    }
+  };
 
   return (
-    (<div
-      className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-50 flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -47,52 +65,44 @@ export default function LinkedinAuth() {
             {isLogin ? 'Sign in to your account' : 'Create your account'}
           </h2>
         </div>
+        {errorMessage && <p className="text-red-500 text-center">{errorMessage}</p>}
         <Tabs defaultValue="email" className="w-full">
           <TabsList className="grid w-full grid-cols-2 mb-4">
             <TabsTrigger value="email">Email</TabsTrigger>
             <TabsTrigger value="phone">Phone</TabsTrigger>
           </TabsList>
           <TabsContent value="email">
-            <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+            <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
               <div className="rounded-md shadow-sm space-y-4">
                 <div>
                   <Label htmlFor="email-address" className="sr-only">
                     Email address
                   </Label>
                   <div className="relative">
-                    <Mail
-                      className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                      size={20} />
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                     <Input
                       id="email-address"
-                      name="email"
+                      {...register("email", { required: true })}
                       type="email"
                       autoComplete="email"
-                      required
                       className="pl-10"
-                      placeholder="Email address"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)} />
+                      placeholder="Email address" />
                   </div>
+                  {errors.email && <p className="text-red-500">Email is required.</p>}
                 </div>
                 <div>
                   <Label htmlFor="password" className="sr-only">
                     Password
                   </Label>
                   <div className="relative">
-                    <Lock
-                      className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                      size={20} />
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                     <Input
                       id="password"
-                      name="password"
+                      {...register("password", { required: true })}
                       type={showPassword ? "text" : "password"}
                       autoComplete="current-password"
-                      required
                       className="pl-10 pr-10"
-                      placeholder="Password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)} />
+                      placeholder="Password" />
                     <button
                       type="button"
                       className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
@@ -100,6 +110,7 @@ export default function LinkedinAuth() {
                       {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                     </button>
                   </div>
+                  {errors.password && <p className="text-red-500">Password is required.</p>}
                 </div>
                 <AnimatePresence>
                   {!isLogin && (
@@ -113,39 +124,16 @@ export default function LinkedinAuth() {
                           Full Name
                         </Label>
                         <div className="relative">
-                          <User
-                            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                            size={20} />
+                          <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                           <Input
                             id="full-name"
-                            name="full-name"
+                            {...register("fullName", { required: true })}
                             type="text"
                             autoComplete="name"
-                            required
                             className="pl-10"
-                            placeholder="Full Name"
-                            value={fullName}
-                            onChange={(e) => setFullName(e.target.value)} />
+                            placeholder="Full Name" />
                         </div>
-                      </div>
-                      <div className="mt-4">
-                        <Label htmlFor="headline" className="sr-only">
-                          Headline
-                        </Label>
-                        <div className="relative">
-                          <Briefcase
-                            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                            size={20} />
-                          <Input
-                            id="headline"
-                            name="headline"
-                            type="text"
-                            required
-                            className="pl-10"
-                            placeholder="Headline (e.g., Job Title)"
-                            value={headline}
-                            onChange={(e) => setHeadline(e.target.value)} />
-                        </div>
+                        {errors.fullName && <p className="text-red-500">Full Name is required.</p>}
                       </div>
                     </motion.div>
                   )}
@@ -177,9 +165,7 @@ export default function LinkedinAuth() {
           </TabsContent>
           <TabsContent value="phone">
             <div className="relative">
-              <Phone
-                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                size={20} />
+              <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
               <Input type="tel" placeholder="Phone number" className="pl-10" />
             </div>
             <Button className="w-full mt-4">
@@ -197,37 +183,30 @@ export default function LinkedinAuth() {
               <span className="px-2 bg-white text-gray-500">Or continue with</span>
             </div>
           </div>
-
-          <div className="mt-6 grid grid-cols-3 gap-3">
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button variant="outline" className="w-full">
-                <Github className="h-5 w-5" />
-                <span className="sr-only">GitHub</span>
-              </Button>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button variant="outline" className="w-full">
-                <Twitter className="h-5 w-5 text-blue-400" />
-                <span className="sr-only">Twitter</span>
-              </Button>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button variant="outline" className="w-full">
-                <Linkedin className="h-5 w-5 text-blue-600" />
-                <span className="sr-only">LinkedIn</span>
-              </Button>
-            </motion.div>
+          <div className="flex justify-center space-x-4 mt-4">
+            <Button variant="outline" className="flex items-center space-x-2">
+              <Github className="h-5 w-5" />
+              <span>Github</span>
+            </Button>
+            <Button variant="outline" className="flex items-center space-x-2">
+              <Twitter className="h-5 w-5" />
+              <span>Twitter</span>
+            </Button>
           </div>
         </div>
 
-        <div className="text-center mt-4">
-          <button
-            onClick={() => setIsLogin(!isLogin)}
-            className="text-sm text-blue-600 hover:text-blue-500 transition-colors duration-300">
-            {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
-          </button>
+        <div className="text-sm text-center">
+          <span>
+            {isLogin ? 'Don’t have an account?' : 'Already have an account?'}
+            <button
+              type="button"
+              className="font-medium text-blue-600 hover:text-blue-500 ml-1"
+              onClick={() => setIsLogin(!isLogin)}>
+              {isLogin ? 'Sign up' : 'Sign in'}
+            </button>
+          </span>
         </div>
       </motion.div>
-    </div>)
+    </div>
   );
 }
