@@ -15,6 +15,21 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  googleId: {
+     type: String,
+     required: true, 
+     unique: true
+     },
+  TwitterId: {
+     type: String,
+     required: true, 
+     unique: true
+     },
+  Twitter: {
+     type: String,
+     required: true, 
+     unique: true
+     },
   profilePicture: {
     type: String, // URL of the profile picture
     default: 'default-profile-picture-url',
