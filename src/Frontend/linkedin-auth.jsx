@@ -20,9 +20,7 @@ export default function LinkedinAuth() {
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   useEffect(() => {
-    // Simulating loading of user preferences
     const timer = setTimeout(() => {
-      // Simulate setting default values if needed
     }, 1000);
     return () => clearTimeout(timer);
   }, []);
@@ -34,12 +32,12 @@ export default function LinkedinAuth() {
       const payload = {
         email: data.email,
         password: data.password,
-        fullName: isLogin ? undefined : data.fullName, // Include fullName only for signup
+        fullName: isLogin ? undefined : data.fullName, 
       };
 
       const response = await axios.post('/api/signup', payload);
       console.log('Form submitted:', response.data);
-      // Handle successful signup/login (e.g., redirect or show success message)
+      
     } catch (error) {
       if (error.response) {
         setErrorMessage(error.response.data.message || 'An error occurred. Please try again.');
