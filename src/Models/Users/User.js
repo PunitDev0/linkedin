@@ -20,12 +20,12 @@ const UserSchema = new mongoose.Schema({
      required: true, 
      unique: true
      },
-  TwitterId: {
+  twitterId: {
      type: String,
      required: true, 
      unique: true
      },
-  Twitter: {
+  githubId: {
      type: String,
      required: true, 
      unique: true
