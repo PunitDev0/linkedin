@@ -1,4 +1,4 @@
-'use client';
+'use client'; // Required for client-side rendering
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -7,46 +7,55 @@ import { Button } from "@/components/ui/Auth-ui/button";
 import { Input } from "@/components/ui/Auth-ui/input";
 import { Label } from "@/components/ui/Auth-ui/label";
 import { Checkbox } from "@/components/ui/Auth-ui/checkbox";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Auth-ui/tabs";
-import { Linkedin, Github, Twitter, Mail, Lock, User, Eye, EyeOff,Google } from 'lucide-react';
+import { Linkedin, Github, Twitter, Mail, Lock, User, Eye, EyeOff, Google } from 'lucide-react';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
-
+import { useSession } from "next-auth/react";
+import { signIn } from 'next-auth/react';
 export default function LinkedinAuth() {
+  const { data: session, status } = useSession();
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
+ 
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        // Some effect if needed
+      }, 1000);
+      return () => clearTimeout(timer);
+    }, []);
 
-  const onSubmit = async (data) => {
-    setErrorMessage(''); // Reset the error message
-    
-    try {
-      const payload = {
-        email: data.email,
-        password: data.password,
-        fullName: isLogin ? undefined : data.fullName, 
-      };
-
-      const response = await axios.post('/api/signup', payload);
-      console.log('Form submitted:', response.data);
-      
-    } catch (error) {
-      if (error.response) {
-        setErrorMessage(error.response.data.message || 'An error occurred. Please try again.');
-      } else {
-        setErrorMessage('An unexpected error occurred. Please try again later.');
-      }
-      console.error('Error submitting form:', error);
+    if (status === "loading") {
+      return <div>Loading...</div>; // Show loading state while checking session
     }
-  };
+    
+
+    const onSubmit = async (data) => {
+      setErrorMessage(''); // Reset the error message
+      console.log(data);
+      try {
+        await axios.post('api/auth/register', data);
+        // After successful registration, you can sign in the user
+        await signIn('credentials', {
+          redirect: false,
+          email: data.email,
+          password: data.password,
+        });
+      } catch (error) {
+        // console.log("not find route");
+        
+        setErrorMessage(error.response.data.error); // Set error message
+      }
+    };
+    
+    const toggleLogin = () => setIsLogin(!isLogin);
+
+    const handleProviderSignIn = (provider) => {
+      signIn(provider); // Use NextAuth to sign in with OAuth providers
+    };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-50 flex items-center justify-center p-4">
@@ -55,7 +64,7 @@ export default function LinkedinAuth() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-2xl">
-        <div className="text-center">
+        <div className="text-center"  >
           <motion.div whileHover={{ scale: 1.1, rotate: 360 }} transition={{ duration: 0.5 }}>
             <Linkedin className="mx-auto h-12 w-12 text-blue-600" />
           </motion.div>
@@ -165,16 +174,16 @@ export default function LinkedinAuth() {
             </div>
           </div>
           <div className="flex justify-center space-x-4 mt-4">
-            <Button variant="outline" className="flex items-center space-x-2">
-            <i className='bx bxl-google text-2xl'></i>
-              <span>Github</span>
+            <Button variant="outline" className="flex items-center space-x-2"  onClick={() => handleProviderSignIn('google')}>
+              <i className='bx bxl-google text-2xl'></i>
+              <span>Google</span>
             </Button>
             <Button variant="outline" className="flex items-center space-x-2">
               <i className='bx bxl-github text-2xl'></i>
               <span>Github</span>
             </Button>
             <Button variant="outline" className="flex items-center space-x-2">
-            <i className='bx bxl-twitter text-2xl'></i>
+              <i className='bx bxl-twitter text-2xl'></i>
               <span>Twitter</span>
             </Button>
           </div>

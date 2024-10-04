@@ -1,8 +1,9 @@
 // models/User.js
 import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 const UserSchema = new mongoose.Schema({
-  name: {
+  username: {
     type: String,
     required: true,
   },
@@ -16,22 +17,22 @@ const UserSchema = new mongoose.Schema({
     required: true,
   },
   googleId: {
-     type: String,
-     required: true, 
-     unique: true
-     },
+    type: String,
+    default: '',
+    sparse: true, // Allows multiple null values
+  },
   twitterId: {
-     type: String,
-     required: true, 
-     unique: true
-     },
+    type: String,
+    default: '',
+    sparse: true,
+  },
   githubId: {
-     type: String,
-     required: true, 
-     unique: true
-     },
+    type: String,
+    default: '',
+    sparse: true,
+  },
   profilePicture: {
-    type: String, // URL of the profile picture
+    type: String,
     default: 'default-profile-picture-url',
   },
   bio: {
@@ -73,14 +74,22 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
+// Uncomment these if you want password hashing and comparison
+// UserSchema.pre('save', async function (next) {
+//   const user = this;
+//   if (!user.isModified('password')) return next();
+//   try {
+//     const salt = await bcrypt.genSalt(10);
+//     user.password = await bcrypt.hash(user.password, salt);
+//     next();
+//   } catch (err) {
+//     return next(err);
+//   }
+// });
 
-UserSchema.pre('save', async function(next) {
-  if (this.isModified('password')) {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-  }
-  next();
-});
+// UserSchema.methods.comparePassword = async function (candidatePassword) {
+//   return bcrypt.compare(candidatePassword, this.password);
+// };
 
-const UserModel = mongoose.models.UserModel || mongoose.model('UserModel', UserSchema);
-export default UserModel;
+const User = mongoose.models.User || mongoose.model('User', UserSchema);
+export default User;
