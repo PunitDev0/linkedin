@@ -10,49 +10,33 @@ import { Checkbox } from "@/components/ui/Auth-ui/checkbox";
 import { Linkedin, Github, Twitter, Mail, Lock, User, Eye, EyeOff, Google } from 'lucide-react';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
-import { redirect } from 'next/dist/server/api-utils';
-
-
-
-
-
-
+import { useRouter } from 'next/navigation';
 
 export default function LinkedinAuth() {
   // const { data: session, status } = useSession();
+  const router = useRouter();
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false)
   
   const { register, handleSubmit, formState: { errors } } = useForm();
-
- 
-    // useEffect(() => {
-    //   const timer = setTimeout(() => {
-    //     // Some effect if needed
-    //   }, 1000);
-    //   return () => clearTimeout(timer);
-    // }, []);
-
-    // if (status === "loading") {
-    //   return <div>Loading...</div>; // Show loading state while checking session
-    // }
     
-
     const onSubmit = async (data) => {
       setErrorMessage('');
-      const { email, password, username } = data; 
       console.log(data);
       
       try {
         if(isLogin){
-          const response = await axios.get('/api/login');
-          setSuccessMessage(response.data.message);
-          redirect("/Feed")
+          const response = await axios.post('/api/login', data);
+          console.log(response);
+          setLoading(true);
+          // Automatically redirect to the Feed page
+          router.push('/feed'); 
         }else{
           const response = await axios.post('/api/register', data);
-          setSuccessMessage(response.data.message);
           setIsLogin(true)
+          setSuccessMessage(response.data.message);
         }
       } catch (error) {
           setErrorMessage("An error occurred during authentication."+ error);
