@@ -4,52 +4,27 @@ import { useState, useEffect } from 'react'
 import { Bell, Home, MessageSquare, Search, Users, Briefcase, Moon, Sun } from 'lucide-react'
 import { Button } from "@/components/ui/nav-ui/button"
 import { Input } from "@/components/ui/nav-ui/input"
-
+import { useDarkMode } from '@/app/context/DarkModeContext'
 export default function NavbarComponent() {
   const [isSmallScreen, setIsSmallScreen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [darkMode, setDarkMode] = useState(false)
+  const { darkMode, toggleDarkMode } = useDarkMode();
 
   useEffect(() => {
     const checkScreenSize = () => {
       setIsSmallScreen(window.innerWidth < 640)
     }
-
-    const checkDarkMode = () => {
-      if (typeof window !== 'undefined') {
-        const isDarkMode = localStorage.getItem('darkMode') === 'true'
-        setDarkMode(isDarkMode)
-        if (isDarkMode) {
-          document.documentElement.classList.add('dark')
-        } else {
-          document.documentElement.classList.remove('dark')
-        }
-      }
-    }
-
     checkScreenSize()
-    checkDarkMode()
     window.addEventListener('resize', checkScreenSize)
 
     return () => window.removeEventListener('resize', checkScreenSize);
   }, [])
 
-  const toggleDarkMode = () => {
-    const newDarkMode = !darkMode
-    setDarkMode(newDarkMode)
-    localStorage.setItem('darkMode', newDarkMode.toString())
-    if (newDarkMode) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
-  }
-
   return (
     (<nav
-      className="bg-white dark:bg-gray-800 shadow-md transition-colors duration-200">
+      className="bg-white dark:bg-[#1B1F23] shadow-md border transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center  justify-between h-14">
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <svg

@@ -8,9 +8,9 @@ import { Switch } from "@/components/ui/feed-ui/switch"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/feed-ui/popover"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/feed-ui/dropdown-menu"
 import { ThumbsUp, MessageSquare, Repeat2, Send, Image, Briefcase, FileText, MoreHorizontal } from 'lucide-react'
-
+import { useDarkMode } from '../context/DarkModeContext';
 export default function Feed() {
-  const [darkMode, setDarkMode] = useState(true)
+  const { darkMode, toggleDarkMode } = useDarkMode();
   const [isLiked, setIsLiked] = useState(false)
   const [showComments, setShowComments] = useState(false)
   const [comment, setComment] = useState('')
@@ -29,9 +29,6 @@ export default function Feed() {
     }
   ])
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode)
-  }
 
   const handleLike = () => {
     setIsLiked(!isLiked)
@@ -57,13 +54,13 @@ export default function Feed() {
 
   return (
     (<div className={`min-h-screen ${darkMode ? 'dark' : ''}`}>
-      <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white p-4">
-        <div className="container mx-auto flex justify-end mb-4">
+      <div className="bg-white dark:bg-black text-gray-900 dark:text-white p-4">
+        {/* <div className="container mx-auto flex justify-end mb-4">
           <Switch checked={darkMode} onCheckedChange={toggleDarkMode} />
-        </div>
+        </div> */}
         <main className="container mx-auto flex flex-col md:flex-row gap-8">
           <aside className="w-full md:w-1/4">
-            <Card className="bg-white dark:bg-gray-800">
+            <Card className="bg-white dark:bg-[#1B1F23]">
               <CardHeader className="text-center">
                 <Avatar className="w-20 h-20 mx-auto">
                   <AvatarImage src="/placeholder-user.jpg" alt="Punit Nigam" />
@@ -91,14 +88,14 @@ export default function Feed() {
             </Card>
           </aside>
           <section className="w-full md:w-1/2">
-            <Card className="bg-white dark:bg-gray-800 mb-4">
+            <Card className="bg-white dark:bg-[#1B1F23] mb-4">
               <CardContent className="p-4">
                 <div className="flex items-center space-x-4">
                   <Avatar>
                     <AvatarImage src="/placeholder-user.jpg" alt="User" />
                     <AvatarFallback>UN</AvatarFallback>
                   </Avatar>
-                  <Input placeholder="Start a post" className="bg-gray-100 dark:bg-gray-700" />
+                  <Input placeholder="Start a post" className="bg-gray-100 dark:bg-[#1B1F23]" />
                 </div>
                 <div className="flex justify-between mt-4">
                   <Button variant="ghost" size="sm">
@@ -113,7 +110,7 @@ export default function Feed() {
                 </div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-gray-800">
+            <Card className="bg-white dark:bg-[#1B1F23]">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
@@ -144,7 +141,7 @@ export default function Feed() {
               <CardContent>
                 <p>All things Javascript JS, Typescript, NodeJS, React, Angular...</p>
                 <p className="mt-2">JavaScript Certification Course :- https://lnkd.in/dAqv7Ts7</p>
-                <div className="mt-4 bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                <div className="mt-4 bg-gray-100 dark:bg-[#1B1F23] p-4 rounded-lg">
                   <h4 className="font-bold mb-2">How do you find the length of a string in JavaScript?</h4>
                   <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">The author can see how you vote. Learn more</p>
                   <div className="space-y-2">
@@ -213,7 +210,7 @@ export default function Feed() {
                         <AvatarImage src={comment.user.avatar} alt={comment.user.name} />
                         <AvatarFallback>{comment.user.name[0]}</AvatarFallback>
                       </Avatar>
-                      <div className="flex-1 bg-gray-100 dark:bg-gray-700 rounded-lg p-2">
+                      <div className="flex-1 bg-gray-100 dark:bg-[#1B1F23] rounded-lg p-2">
                         <p className="font-semibold text-sm">{comment.user.name}</p>
                         <p className="text-sm">{comment.content}</p>
                         <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{comment.timestamp}</p>
@@ -228,7 +225,7 @@ export default function Feed() {
                       placeholder="Add a comment..."
                       value={comment}
                       onChange={(e) => setComment(e.target.value)}
-                      className="flex-grow bg-gray-100 dark:bg-gray-700" />
+                      className="flex-grow bg-gray-100 dark:bg-[#1B1F23]" />
                     <Button type="submit" variant="secondary">Post</Button>
                   </form>
                 </div>
@@ -236,7 +233,7 @@ export default function Feed() {
             </Card>
           </section>
           <aside className="w-full md:w-1/4">
-            <Card className="bg-white dark:bg-gray-800">
+            <Card className="bg-white dark:bg-[#1B1F23]">
               <CardHeader>
                 <h2 className="text-xl font-bold">LinkedIn News</h2>
               </CardHeader>
