@@ -59,7 +59,7 @@ export default function Feed() {
           <Switch checked={darkMode} onCheckedChange={toggleDarkMode} />
         </div> */}
         <main className="container mx-auto flex flex-col md:flex-row gap-8">
-          <aside className="w-full md:w-1/4">
+          <aside className="w-full md:w-1/6">
             <Card className="bg-white dark:bg-[#1B1F23]">
               <CardHeader className="text-center">
                 <Avatar className="w-20 h-20 mx-auto">
@@ -95,7 +95,7 @@ export default function Feed() {
                     <AvatarImage src="/placeholder-user.jpg" alt="User" />
                     <AvatarFallback>UN</AvatarFallback>
                   </Avatar>
-                  <Input placeholder="Start a post" className="bg-gray-100 dark:bg-[#1B1F23]" />
+                  <Input placeholder="Start a post" className="bg-gray-100 border-gray-500 dark:bg-[#1B1F23]" />
                 </div>
                 <div className="flex justify-between mt-4">
                   <Button variant="ghost" size="sm">
