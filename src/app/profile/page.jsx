@@ -3,12 +3,23 @@
 import React, { useState, useEffect } from 'react'
 import { Edit, Plus, Eye, BarChart2, Search as SearchIcon, Moon, Sun, Pencil, Fullscreen } from 'lucide-react';
 import { useDarkMode } from '../context/DarkModeContext';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
+import ProfileEditor from '@/components/profile-editor';
 export default function ProfilePage() {
   const { darkMode } = useDarkMode();
+  const [edit, setEdit] = useState(false)
+  // useEffect(()=>{
+  //   if(edit){
+  //     window.addEventListener('click',()=>{
+  //       setEdit(false)
+  //   })
+  //   }
+  // },[edit, setEdit])
   return (
     (<div
       className="bg-gray-100 dark:bg-black min-h-screen text-gray-900 dark:text-gray-100 transition-colors duration-200">
+        {edit && <ProfileEditor setEdit={setEdit}/>}
       <main className="container mx-auto px-4 py-8">
         <div
           className="bg-white dark:bg-[#1B1F23] rounded-lg shadow-sm overflow-hidden mb-6">
@@ -27,12 +38,14 @@ export default function ProfilePage() {
           </div>
           <div className="p-4 md:p-6 relative">
             <div
+             
               className="absolute -top-16 left-4 md:left-6 w-32 h-32 rounded-full border-4 border-white dark:border-[#1B1F23] overflow-hidden">
                 
               <img
                 src=""
                 alt="Punit Nigam"
                 className="w-full h-full object-cover" />
+                
               <div
                 className="absolute bottom-0 left-0 right-0 bg-green-500 text-white text-xs text-center py-1">
                 OPEN TO WORK
@@ -42,7 +55,7 @@ export default function ProfilePage() {
               className="mt-16 md:mt-20 flex flex-col md:flex-row justify-between items-start">
                  <button
               className="absolute top-2 right-2 p-2 bg-white dark:bg-[#1B1F23] rounded-full shadow-md">
-              <Pencil size={16} className="text-gray-600 dark:text-gray-300" />
+              <Pencil size={16} className="text-gray-600 dark:text-gray-300" onClick = {() => setEdit(!edit)} />
             </button>
               <div>
                 <h1 className="text-2xl font-bold">Punit Nigam</h1>

@@ -1,4 +1,6 @@
 "use client";
+import { useRouter } from 'next/navigation'
+import { redirect } from 'next/navigation';
 import { useState } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/feed-ui/avatar"
 import { Button } from "@/components/ui/feed-ui/button"
@@ -10,6 +12,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { ThumbsUp, MessageSquare, Repeat2, Send, Image, Briefcase, FileText, MoreHorizontal } from 'lucide-react'
 import { useDarkMode } from '../context/DarkModeContext';
 export default function Feed() {
+  const router = useRouter();
   const { darkMode, toggleDarkMode } = useDarkMode();
   const [isLiked, setIsLiked] = useState(false)
   const [showComments, setShowComments] = useState(false)
@@ -29,6 +32,9 @@ export default function Feed() {
     }
   ])
 
+  const redirect = ()=>{
+    router.push('/profile')
+  }
 
   const handleLike = () => {
     setIsLiked(!isLiked)
@@ -54,15 +60,15 @@ export default function Feed() {
 
   return (
     (<div className={`min-h-screen ${darkMode ? 'dark' : ''}`}>
-      <div className="bg-white dark:bg-black text-gray-900 dark:text-white p-4">
+      <div className="bg-[#F4F2EE] dark:bg-black text-gray-900 dark:text-white p-4">
         {/* <div className="container mx-auto flex justify-end mb-4">
           <Switch checked={darkMode} onCheckedChange={toggleDarkMode} />
         </div> */}
         <main className="container mx-auto flex flex-col md:flex-row gap-8">
           <aside className="w-full md:w-1/6">
             <Card className="bg-white dark:bg-[#1B1F23]">
-              <CardHeader className="text-center">
-                <Avatar className="w-20 h-20 mx-auto">
+              <CardHeader className="text-center" onClick={() => redirect()}>
+                <Avatar className="w-20 h-20 mx-auto" >
                   <AvatarImage src="/placeholder-user.jpg" alt="Punit Nigam" />
                   <AvatarFallback>PN</AvatarFallback>
                 </Avatar>
