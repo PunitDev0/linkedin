@@ -10,7 +10,9 @@ import { Checkbox } from "@/components/ui/Auth-ui/checkbox";
 import { Linkedin, Github, Twitter, Mail, Lock, User, Eye, EyeOff, Google } from 'lucide-react';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
+import { useRouter, redirect } from 'next/navigation';
+import { signIn } from 'next-auth/react';
+
 
 export default function LinkedinAuth() {
   // const { data: session, status } = useSession();
@@ -25,14 +27,30 @@ export default function LinkedinAuth() {
     const onSubmit = async (data) => {
       setErrorMessage('');
       console.log(data);
-      
       try {
         if(isLogin){
-          const response = await axios.post('/api/login', data);
-          console.log(response);
-          setLoading(true);
+          // const response = await axios.post('/api/login', data);
+          // console.log(response);
+          // setLoading(true);
           // Automatically redirect to the Feed page
-          router.push('/feed'); 
+          // router.push('/feed'); 
+
+          try{
+
+            await signIn("credentials",{
+              redirect: true,
+              email: data.email,
+              password: data.password,
+              redirectTo:'/feed'
+            })
+            
+          }catch(error){
+            return error.message
+          }
+
+
+
+
         }else{
           const response = await axios.post('/api/register', data);
           setIsLogin(true)
