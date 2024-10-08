@@ -29,28 +29,16 @@ export default function LinkedinAuth() {
       console.log(data);
       try {
         if(isLogin){
-          // const response = await axios.post('/api/login', data);
-          // console.log(response);
-          // setLoading(true);
-          // Automatically redirect to the Feed page
-          // router.push('/feed'); 
-
           try{
-
             await signIn("credentials",{
               redirect: true,
               email: data.email,
               password: data.password,
               redirectTo:'/feed'
-            })
-            
+            })      
           }catch(error){
             return error.message
           }
-
-
-
-
         }else{
           const response = await axios.post('/api/register', data);
           setIsLogin(true)

@@ -1,4 +1,3 @@
-// models/User.js
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
@@ -91,5 +90,7 @@ const UserSchema = new mongoose.Schema({
 //   return bcrypt.compare(candidatePassword, this.password);
 // };
 
-const User = mongoose.models.User || mongoose.model('User', UserSchema);
+// The fix: Prevent model overwrite issue
+const User = mongoose.models?.User || mongoose.model('User', UserSchema);
+
 export default User;

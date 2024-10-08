@@ -11,8 +11,15 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/feed-ui
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/feed-ui/dropdown-menu"
 import { ThumbsUp, MessageSquare, Repeat2, Send, Image, Briefcase, FileText, MoreHorizontal } from 'lucide-react'
 import { useDarkMode } from '../context/DarkModeContext';
-export default function Feed() {
+import { auth } from '../auth';
+export default  function Feed() {
   const router = useRouter();
+
+    // const sess = await auth()
+    // console.log(sess);
+  
+
+
   const { darkMode, toggleDarkMode } = useDarkMode();
   const [isLiked, setIsLiked] = useState(false)
   const [showComments, setShowComments] = useState(false)
