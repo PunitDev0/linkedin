@@ -9,13 +9,8 @@ import ProfileEditor from '@/components/profile-editor';
 export default function ProfilePage() {
   const { darkMode } = useDarkMode();
   const [edit, setEdit] = useState(false)
-  // useEffect(()=>{
-  //   if(edit){
-  //     window.addEventListener('click',()=>{
-  //       setEdit(false)
-  //   })
-  //   }
-  // },[edit, setEdit])
+  
+
   return (
     (<div
       className="bg-gray-100 dark:bg-black min-h-screen text-gray-900 dark:text-gray-100 transition-colors duration-200">

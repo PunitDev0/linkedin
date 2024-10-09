@@ -11,49 +11,54 @@ import { Linkedin, Github, Twitter, Mail, Lock, User, Eye, EyeOff, Google } from
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { useRouter, redirect } from 'next/navigation';
-import { signIn } from 'next-auth/react';
-
+import { signIn, auth } from 'next-auth/react';
+import { useSession } from "next-auth/react";
 
 export default function LinkedinAuth() {
-  // const { data: session, status } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false)
-  
   const { register, handleSubmit, formState: { errors } } = useForm();
-    
-    const onSubmit = async (data) => {
-      setErrorMessage('');
-      console.log(data);
+  const toggleLogin = () => setIsLogin(!isLogin);
+  
+  
+// Here apis to handle login or  register /////////////////////////////////////////////
+const onSubmit = async (data) => {
+  setErrorMessage('');
+  console.log(data);
+  try {
+    if (isLogin) {
+      // Handle credentials-based login
       try {
-        if(isLogin){
-          try{
-            await signIn("credentials",{
-              redirect: true,
-              email: data.email,
-              password: data.password,
-              redirectTo:'/feed'
-            })      
-          }catch(error){
-            return error.message
-          }
-        }else{
-          const response = await axios.post('/api/register', data);
-          setIsLogin(true)
-          setSuccessMessage(response.data.message);
-        }
+        await signIn("credentials", {
+          redirect: true,
+          email: data.email,
+          password: data.password,
+          callbackUrl: '/feed', // Redirect to /feed after successful login
+        });
       } catch (error) {
-          setErrorMessage("An error occurred during authentication."+ error);
+        return error.message;
       }
-  };
-    
-    const toggleLogin = () => setIsLogin(!isLogin);
+    } else {
+      // Handle registration process
+      const response = await axios.post('/api/register', data);
+      setIsLogin(true);
+      setSuccessMessage(response.data.message);
+    }
+  } catch (error) {
+    setErrorMessage("An error occurred during authentication: " + error.message);
+  }
+};
 
-    const handleProviderSignIn = (provider) => {
-      signIn(provider); // Use NextAuth to sign in with OAuth providers
-    };
+// Handle provider-based sign-in (e.g., GitHub, Google)
+const handleProviderSignIn = (provider) => {
+  // Use NextAuth to sign in with OAuth providers
+  signIn(provider, { callbackUrl: '/feed' }); // Redirect to /feed after successful login
+};
+
    
 
   return (
@@ -177,7 +182,7 @@ export default function LinkedinAuth() {
               <i className='bx bxl-google text-2xl'></i>
               <span>Google</span>
             </Button>
-            <Button variant="outline" onClick={() => signIn("github")} className="flex items-center space-x-2">
+            <Button variant="outline" onClick={() => handleProviderSignIn('github')} className="flex items-center space-x-2">
               <i className='bx bxl-github text-2xl'></i>
               <span>Github</span>
             </Button>

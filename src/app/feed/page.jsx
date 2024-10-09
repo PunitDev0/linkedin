@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from 'next/navigation'
 import { redirect } from 'next/navigation';
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/feed-ui/avatar"
 import { Button } from "@/components/ui/feed-ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/feed-ui/card"
@@ -11,18 +11,22 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/feed-ui
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/feed-ui/dropdown-menu"
 import { ThumbsUp, MessageSquare, Repeat2, Send, Image, Briefcase, FileText, MoreHorizontal } from 'lucide-react'
 import { useDarkMode } from '../context/DarkModeContext';
-import { auth } from '../auth';
+import { useSession } from 'next-auth/react';
+
 export default  function Feed() {
   const router = useRouter();
-
-    // const sess = await auth()
-    // console.log(sess);
+  const { data: session, status } = useSession();
+  useEffect(() => {
+    if (status === 'loading') return; // Wait for session loading
+    if (!session) router.push('/login'); // Redirect if not authenticated
+  }, [status, session, router]);
+  // console.log(session.user);
   
-
-
+  
+  // console.log(session.user.email);
   const { darkMode, toggleDarkMode } = useDarkMode();
   const [isLiked, setIsLiked] = useState(false)
-  const [showComments, setShowComments] = useState(false)
+  const [showComments, setShowComments] = useState(false) 
   const [comment, setComment] = useState('')
   const [comments, setComments] = useState([
     {
