@@ -3,7 +3,9 @@ import LandingPage from '@/components/landing-page'
 
 const login = () => {
   return (
-    <LandingPage/>
+      <>
+        <LandingPage/>
+      </>
   )
 }
 

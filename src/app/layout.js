@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
       <body className="antialiased">
         <SessionProvider>
         <DarkModeProvider>
-        {!isLoginPage && <NavbarComponent />}
+        {/* {!isLoginPage && <NavbarComponent />} */}
         {children}
         </DarkModeProvider>
         </SessionProvider>
