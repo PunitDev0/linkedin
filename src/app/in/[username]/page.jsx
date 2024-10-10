@@ -4,9 +4,15 @@ import React, { useState, useEffect } from 'react'
 import { Edit, Plus, Eye, BarChart2, Search as SearchIcon, Moon, Sun, Pencil, Fullscreen } from 'lucide-react';
 import { useDarkMode } from '@/app/context/DarkModeContext'; 
 import { useRouter } from 'next/router';
+import axios from 'axios';
 import Image from 'next/image';
 import ProfileEditor from '@/components/profile-editor';
-export default function ProfilePage() {
+
+export default function ProfilePage({params}) {
+    const { username } = params;
+    // console.log(username);
+  const [userData, setUserData] = useState([])
+
   const { darkMode } = useDarkMode();
   const [edit, setEdit] = useState(false)
   
@@ -22,10 +28,27 @@ export default function ProfilePage() {
     return () => clearTimeout(timer);
   }, []);
 
-  if (loading) {
-    // You can also show a custom inline loader if you want instead of the one in loading.js
-    return null; // While loading, the app will automatically show the loading.js spinner
-  }
+  useEffect(() => {
+    const fetchUserData = async () => {
+        try {
+            const response = await axios.get(`/api/user/${username}`);
+            setUserData(response.data);
+            console.log(response);
+            ;
+        } catch (err) {
+            console.log(err);
+            
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    fetchUserData();
+}, [username]);
+    console.log(userData);
+    
+const {} = userData;
+
 
   return (
     (<div
@@ -69,7 +92,7 @@ export default function ProfilePage() {
               <Pencil size={16} className="text-gray-600 dark:text-gray-300" onClick = {() => setEdit(!edit)} />
             </button>
               <div>
-                <h1 className="text-2xl font-bold">Punit Nigam</h1>
+                <h1 className="text-2xl font-bold">{userData.username}</h1>
                 <p className="text-gray-600 dark:text-gray-400">Full Stack Developer & MERN Stack Developer</p>
                 <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">New Delhi, Delhi, India · Contact info</p>
                 <p className="text-sm text-gray-500 dark:text-gray-500">257 followers · 229 connections</p>
