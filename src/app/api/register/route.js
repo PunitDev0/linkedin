@@ -1,6 +1,6 @@
 // app/api/register/route.js
 
-import User from "@/Models/Users/User";
+import User from "@/Models/User";
 import { dbConnect } from "@/lib/db";
 import bcrypt from 'bcryptjs';
 import { NextResponse } from 'next/server';

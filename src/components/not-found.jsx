@@ -7,16 +7,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Link from 'next/link'
 import { Button } from '@/components/ui/404/button'
 import { UserCircle, Briefcase, GraduationCap, MapPin, Link as LinkIcon, Search, Sun, Moon } from 'lucide-react'
-import { useDarkMode } from './context/DarkModeContext' 
 
 gsap.registerPlugin(ScrollTrigger)
 
-export default function NotFoundComponent() {
+export function NotFoundComponent() {
   const containerRef = useRef(null)
   const skillBarsRef = useRef(null)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
-//   const [darkMode, setdarkMode] = useState(false)
-  const { darkMode } = useDarkMode();
+  const [isDarkMode, setIsDarkMode] = useState(false)
 
   useEffect(() => {
     if (containerRef.current) {
@@ -97,13 +95,13 @@ export default function NotFoundComponent() {
   }
 
   const searchVariants = {
-    closed: { width: '40px', background: darkMode ? '#ffffff' : '#0a66c2' },
-    open: { width: '100%', background: darkMode ? '#2d333b' : '#ffffff' }
+    closed: { width: '40px', background: isDarkMode ? '#ffffff' : '#0a66c2' },
+    open: { width: '100%', background: isDarkMode ? '#2d333b' : '#ffffff' }
   }
 
   return (
     (<div
-      className={`relative flex flex-col items-center justify-center min-h-[93vh] overflow-hidden ${darkMode ? 'bg-black text-white' : 'bg-[#f3f2ef] text-[#2977c9]'}`}
+      className={`relative flex flex-col items-center justify-center min-h-screen overflow-hidden ${isDarkMode ? 'bg-[#1B1F23] text-white' : 'bg-[#f3f2ef] text-[#2977c9]'}`}
       ref={containerRef}>
       <svg
         className="absolute inset-0 w-full h-full"
@@ -114,7 +112,7 @@ export default function NotFoundComponent() {
           y1="20%"
           x2="40%"
           y2="80%"
-          stroke={darkMode ? "#ffffff" : "#0a66c2"}
+          stroke={isDarkMode ? "#ffffff" : "#0a66c2"}
           strokeWidth="2" />
         <line
           className="line"
@@ -122,7 +120,7 @@ export default function NotFoundComponent() {
           y1="15%"
           x2="60%"
           y2="70%"
-          stroke={darkMode ? "#ffffff" : "#0a66c2"}
+          stroke={isDarkMode ? "#ffffff" : "#0a66c2"}
           strokeWidth="2" />
         <line
           className="line"
@@ -130,59 +128,59 @@ export default function NotFoundComponent() {
           y1="20%"
           x2="90%"
           y2="80%"
-          stroke={darkMode ? "#ffffff" : "#0a66c2"}
+          stroke={isDarkMode ? "#ffffff" : "#0a66c2"}
           strokeWidth="2" />
         <circle
           className="node"
           cx="10%"
           cy="20%"
           r="4"
-          fill={darkMode ? "#ffffff" : "#0a66c2"} />
+          fill={isDarkMode ? "#ffffff" : "#0a66c2"} />
         <circle
           className="node"
           cx="30%"
           cy="15%"
           r="4"
-          fill={darkMode ? "#ffffff" : "#0a66c2"} />
+          fill={isDarkMode ? "#ffffff" : "#0a66c2"} />
         <circle
           className="node"
           cx="40%"
           cy="80%"
           r="4"
-          fill={darkMode ? "#ffffff" : "#0a66c2"} />
+          fill={isDarkMode ? "#ffffff" : "#0a66c2"} />
         <circle
           className="node"
           cx="60%"
           cy="20%"
           r="4"
-          fill={darkMode ? "#ffffff" : "#0a66c2"} />
+          fill={isDarkMode ? "#ffffff" : "#0a66c2"} />
         <circle
           className="node"
           cx="60%"
           cy="70%"
           r="4"
-          fill={darkMode ? "#ffffff" : "#0a66c2"} />
+          fill={isDarkMode ? "#ffffff" : "#0a66c2"} />
         <circle
           className="node"
           cx="90%"
           cy="80%"
           r="4"
-          fill={darkMode ? "#ffffff" : "#0a66c2"} />
+          fill={isDarkMode ? "#ffffff" : "#0a66c2"} />
       </svg>
       <motion.div
-        className={`${darkMode ? 'bg-[#2d333b]' : 'bg-white'} rounded-lg shadow-lg p-8 m-4 w-full max-w-md z-10`}
+        className={`${isDarkMode ? 'bg-[#2d333b]' : 'bg-white'} rounded-lg shadow-lg p-8 m-4 w-full max-w-md z-10`}
         initial="hidden"
         animate="visible"
         variants={profileVariants}>
         <motion.div className="text-center" variants={textVariants}>
           <motion.div
-            className={`text-6xl font-bold mb-4 ${darkMode ? 'text-[#58a6ff]' : 'text-[#b24020]'}`}
+            className={`text-6xl font-bold mb-4 ${isDarkMode ? 'text-[#58a6ff]' : 'text-[#b24020]'}`}
             variants={textVariants}
             whileHover={{ scale: 1.1, rotate: [0, -5, 5, -5, 0], transition: { duration: 0.5 } }}>
             404
           </motion.div>
           <motion.h1
-            className={`text-2xl font-semibold mb-4 ${darkMode ? 'text-white' : 'text-[#000000]'}`}
+            className={`text-2xl font-semibold mb-4 ${isDarkMode ? 'text-white' : 'text-[#000000]'}`}
             variants={textVariants}>
             Profile Not Found
           </motion.h1>
@@ -190,10 +188,10 @@ export default function NotFoundComponent() {
             className="flex justify-center mb-4"
             variants={textVariants}
             whileHover={{ scale: 1.1, rotate: 360, transition: { duration: 0.5 } }}>
-            <UserCircle size={64} className={darkMode ? 'text-white' : 'text-[#666666]'} />
+            <UserCircle size={64} className={isDarkMode ? 'text-white' : 'text-[#666666]'} />
           </motion.div>
           <motion.p
-            className={darkMode ? 'text-[#8b949e] mb-4' : 'text-[#666666] mb-4'}
+            className={isDarkMode ? 'text-[#8b949e] mb-4' : 'text-[#666666] mb-4'}
             variants={textVariants}>
             Oops! The profile youre looking for doesnt exist.
           </motion.p>
@@ -201,25 +199,25 @@ export default function NotFoundComponent() {
 
         <motion.div className="mb-6" variants={textVariants} ref={skillBarsRef}>
           <h2
-            className={`text-lg font-semibold mb-2 ${darkMode ? 'text-white' : 'text-[#000000]'}`}>Skills</h2>
+            className={`text-lg font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-[#000000]'}`}>Skills</h2>
           <div className="space-y-2">
-            <div className={darkMode ? 'bg-[#30363d] rounded' : 'bg-[#e1e9ee] rounded'}>
+            <div className={isDarkMode ? 'bg-[#30363d] rounded' : 'bg-[#e1e9ee] rounded'}>
               <div
-                className={`skill-bar ${darkMode ? 'bg-[#58a6ff]' : 'bg-[#0a66c2]'} h-4 rounded`}
+                className={`skill-bar ${isDarkMode ? 'bg-[#58a6ff]' : 'bg-[#0a66c2]'} h-4 rounded`}
                 style={{ width: '80%' }}>
                 <span className="sr-only">80% proficiency in Skill 1</span>
               </div>
             </div>
-            <div className={darkMode ? 'bg-[#30363d] rounded' : 'bg-[#e1e9ee] rounded'}>
+            <div className={isDarkMode ? 'bg-[#30363d] rounded' : 'bg-[#e1e9ee] rounded'}>
               <div
-                className={`skill-bar ${darkMode ? 'bg-[#58a6ff]' : 'bg-[#0a66c2]'} h-4 rounded`}
+                className={`skill-bar ${isDarkMode ? 'bg-[#58a6ff]' : 'bg-[#0a66c2]'} h-4 rounded`}
                 style={{ width: '65%' }}>
                 <span className="sr-only">65% proficiency in Skill 2</span>
               </div>
             </div>
-            <div className={darkMode ? 'bg-[#30363d] rounded' : 'bg-[#e1e9ee] rounded'}>
+            <div className={isDarkMode ? 'bg-[#30363d] rounded' : 'bg-[#e1e9ee] rounded'}>
               <div
-                className={`skill-bar ${darkMode ? 'bg-[#58a6ff]' : 'bg-[#0a66c2]'} h-4 rounded`}
+                className={`skill-bar ${isDarkMode ? 'bg-[#58a6ff]' : 'bg-[#0a66c2]'} h-4 rounded`}
                 style={{ width: '90%' }}>
                 <span className="sr-only">90% proficiency in Skill 3</span>
               </div>
@@ -231,26 +229,26 @@ export default function NotFoundComponent() {
           <motion.div
             className="flex items-center cursor-pointer"
             whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}>
-            <Briefcase className={darkMode ? 'mr-2 text-white' : 'mr-2 text-[#666666]'} />
-            <span className={darkMode ? 'text-white' : 'text-[#666666]'}>Experience</span>
+            <Briefcase className={isDarkMode ? 'mr-2 text-white' : 'mr-2 text-[#666666]'} />
+            <span className={isDarkMode ? 'text-white' : 'text-[#666666]'}>Experience</span>
           </motion.div>
           <motion.div
             className="flex items-center cursor-pointer"
             whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}>
-            <GraduationCap className={darkMode ? 'mr-2 text-white' : 'mr-2 text-[#666666]'} />
-            <span className={darkMode ? 'text-white' : 'text-[#666666]'}>Education</span>
+            <GraduationCap className={isDarkMode ? 'mr-2 text-white' : 'mr-2 text-[#666666]'} />
+            <span className={isDarkMode ? 'text-white' : 'text-[#666666]'}>Education</span>
           </motion.div>
         </motion.div>
 
         <motion.div className="flex items-center mb-4" variants={textVariants}>
-          <MapPin className={darkMode ? 'mr-2 text-white' : 'mr-2 text-[#666666]'} />
-          <span className={darkMode ? 'text-white' : 'text-[#666666]'}>Location Not Found</span>
+          <MapPin className={isDarkMode ? 'mr-2 text-white' : 'mr-2 text-[#666666]'} />
+          <span className={isDarkMode ? 'text-white' : 'text-[#666666]'}>Location Not Found</span>
         </motion.div>
 
         <motion.div className="flex items-center mb-6" variants={textVariants}>
-          <LinkIcon className={darkMode ? 'mr-2 text-white' : 'mr-2 text-[#666666]'} />
+          <LinkIcon className={isDarkMode ? 'mr-2 text-white' : 'mr-2 text-[#666666]'} />
           <span
-            className={`${darkMode ? 'text-[#58a6ff]' : 'text-[#0a66c2]'} cursor-pointer hover:underline`}>website-not-found.com</span>
+            className={`${isDarkMode ? 'text-[#58a6ff]' : 'text-[#0a66c2]'} cursor-pointer hover:underline`}>website-not-found.com</span>
         </motion.div>
 
         <motion.div variants={textVariants} className="mb-6">
@@ -263,10 +261,10 @@ export default function NotFoundComponent() {
               <input
                 type="text"
                 placeholder={isSearchOpen ? "Search" : ""}
-                className={`w-full h-10 pl-10 pr-4 rounded-full border ${darkMode ? 'border-white text-white bg-[#2d333b] placeholder-gray-400' : 'border-[#0a66c2] text-[#0a66c2]'} focus:outline-none focus:ring-2 ${darkMode ? 'focus:ring-white' : 'focus:ring-[#0a66c2]'} focus:border-transparent`}
+                className={`w-full h-10 pl-10 pr-4 rounded-full border ${isDarkMode ? 'border-white text-white bg-[#2d333b] placeholder-gray-400' : 'border-[#0a66c2] text-[#0a66c2]'} focus:outline-none focus:ring-2 ${isDarkMode ? 'focus:ring-white' : 'focus:ring-[#0a66c2]'} focus:border-transparent`}
                 style={{ display: isSearchOpen ? 'block' : 'none' }} />
               <motion.button
-                className={`absolute left-0 top-0 h-10 w-10 flex items-center justify-center ${darkMode ? 'text-[#1B1F23]' : 'text-white'} rounded-full`}
+                className={`absolute left-0 top-0 h-10 w-10 flex items-center justify-center ${isDarkMode ? 'text-[#1B1F23]' : 'text-white'} rounded-full`}
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}>
@@ -279,13 +277,19 @@ export default function NotFoundComponent() {
         <motion.div variants={textVariants}>
           <Link href="/">
             <Button
-              className={`w-full ${darkMode ? 'bg-[#58a6ff] hover:bg-[#388bfd]' : 'bg-[#0a66c2] hover:bg-[#004182]'} text-white transition-all duration-300 ease-in-out transform hover:scale-105`}>
+              className={`w-full ${isDarkMode ? 'bg-[#58a6ff] hover:bg-[#388bfd]' : 'bg-[#0a66c2] hover:bg-[#004182]'} text-white transition-all duration-300 ease-in-out transform hover:scale-105`}>
               Back to Homepage
             </Button>
           </Link>
         </motion.div>
       </motion.div>
-     
+      <motion.button
+        className={`fixed top-4 right-4 p-2 rounded-full ${isDarkMode ? 'bg-white text-[#1B1F23]' : 'bg-[#1B1F23] text-white'}`}
+        onClick={() => setIsDarkMode(!isDarkMode)}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}>
+        {isDarkMode ? <Sun size={24} /> : <Moon size={24} />}
+      </motion.button>
     </div>)
   );
 }
