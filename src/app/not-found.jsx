@@ -103,72 +103,8 @@ export default function NotFoundComponent() {
 
   return (
     (<div
-      className={`relative flex flex-col items-center justify-center min-h-[92vh] overflow-hidden ${darkMode ? 'bg-[#1B1F23] text-white' : 'bg-[#f3f2ef] text-[#2977c9]'}`}
+      className={`relative flex flex-col items-center justify-center min-h-[92vh] overflow-hidden ${darkMode ? 'bg-black text-white' : 'bg-[#f3f2ef] text-[#2977c9]'}`}
       ref={containerRef}>
-        {/* <svg
-            className="absolute inset-0 w-full h-full"
-            xmlns="http://www.w3.org/2000/svg">
-            <line
-            className="line"
-            x1="10%"
-            y1="20%"
-            x2="40%"
-            y2="80%"
-            stroke={darkMode ? "#ffffff" : "#0a66c2"}
-            strokeWidth="2" />
-            <line
-            className="line"
-            x1="30%"
-            y1="15%"
-            x2="60%"
-            y2="70%"
-            stroke={darkMode ? "#ffffff" : "#0a66c2"}
-            strokeWidth="2" />
-            <line
-            className="line"
-            x1="60%"
-            y1="20%"
-            x2="90%"
-            y2="80%"
-            stroke={darkMode ? "#ffffff" : "#0a66c2"}
-            strokeWidth="2" />
-            <circle
-            className="node"
-            cx="10%"
-            cy="20%"
-            r="4"
-            fill={darkMode ? "#ffffff" : "#0a66c2"} />
-            <circle
-            className="node"
-            cx="30%"
-            cy="15%"
-            r="4"
-            fill={darkMode ? "#ffffff" : "#0a66c2"} />
-            <circle
-            className="node"
-            cx="40%"
-            cy="80%"
-            r="4"
-            fill={darkMode ? "#ffffff" : "#0a66c2"} />
-            <circle
-            className="node"
-            cx="60%"
-            cy="20%"
-            r="4"
-            fill={darkMode ? "#ffffff" : "#0a66c2"} />
-            <circle
-            className="node"
-            cx="60%"
-            cy="70%"
-            r="4"
-            fill={darkMode ? "#ffffff" : "#0a66c2"} />
-            <circle
-            className="node"
-            cx="90%"
-            cy="80%"
-            r="4"
-            fill={darkMode ? "#ffffff" : "#0a66c2"} />
-        </svg> */}
       <motion.div
         className={`${darkMode ? 'bg-[#2d333b]' : 'bg-white'} rounded-lg shadow-lg p-8 m-4 w-full max-w-md z-10`}
         initial="hidden"
