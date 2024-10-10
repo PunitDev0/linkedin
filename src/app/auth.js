@@ -65,7 +65,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (token?.role) {
         session.user.role = token.role; // Add the user's role to the session
       }
-      // console.log(session);
+      console.log(session);
       
       return session;
     },

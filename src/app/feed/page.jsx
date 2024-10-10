@@ -16,11 +16,15 @@ import { useSession } from 'next-auth/react';
 export default  function Feed() {
   const router = useRouter();
   const { data: session, status } = useSession();
-  // useEffect(() => {
-  //   if (status === 'loading') return; // Wait for session loading
-  //   if (!session) router.push('/login'); // Redirect if not authenticated
-  // }, [status, session, router]);
-  // console.log(session.user);
+
+
+
+
+  useEffect(() => {
+    if (status === 'loading') return; // Wait for session loading
+    if (!session) router.push('/login'); // Redirect if not authenticated
+  }, [status, session, router]);
+  console.log(session.user);
   
   
   // console.log(session.user.email);
@@ -44,7 +48,7 @@ export default  function Feed() {
   ])
 
   const redirect = ()=>{
-    router.push('/profile')
+    router.push(`/in/${session.user.name}`)
   }
 
   const handleLike = () => {

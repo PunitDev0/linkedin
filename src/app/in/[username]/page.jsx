@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { Edit, Plus, Eye, BarChart2, Search as SearchIcon, Moon, Sun, Pencil, Fullscreen } from 'lucide-react';
-import { useDarkMode } from '../context/DarkModeContext';
+import { useDarkMode } from '@/app/context/DarkModeContext'; 
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import ProfileEditor from '@/components/profile-editor';
@@ -10,6 +10,22 @@ export default function ProfilePage() {
   const { darkMode } = useDarkMode();
   const [edit, setEdit] = useState(false)
   
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate a delay of 3 seconds before loading the page content
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+
+    // Clean up the timer
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    // You can also show a custom inline loader if you want instead of the one in loading.js
+    return null; // While loading, the app will automatically show the loading.js spinner
+  }
 
   return (
     (<div
