@@ -8,10 +8,8 @@ export default function ProfileEditor({setEdit}) {
   const { register, handleSubmit, watch } = useForm();
   const { darkMode } = useDarkMode();
   const [ExperienceActive,setExperienceActive] = useState(false);
-  // Function to handle form submission
   const onSubmit = (data) => {
     console.log('Form Data:', data);
-    // You can perform any action with form data, like API call, etc.
   };
 
   return (
@@ -21,10 +19,10 @@ export default function ProfileEditor({setEdit}) {
       <div
         className={`${
           darkMode ? 'bg-[#1B1F23] text-gray-200' : 'bg-[#0D0F11] text-gray-800'
-        } fixed h-[600px] z-20 px-6 rounded-lg shadow-lg lg:max-w-4xl w-[90%] md:w-[80%] lg:w-[60%] m-auto left-[50%] top-[50%] transform -translate-x-1/2 -translate-y-1/2 overflow-auto scrollbar-none`}
+        } fixed h-[600px] z-20 rounded-lg shadow-lg lg:max-w-2xl w-[90%] md:w-[80%] lg:w-[60%] m-auto left-[50%] top-[50%] transform -translate-x-1/2 -translate-y-1/2 overflow-auto scrollbar-none`}
         
       >
-             <div className="flex sticky top-0 h-16 z-10 bg-[#1B1F23] justify-between items-center  w-full ">
+             <div className="flex sticky border w-full top-0 px-3 h-16 z-10 bg-[#1B1F23] justify-between items-center  w-full ">
               <h2 className="text-2xl font-bold">Edit intro</h2>
               <div className="flex items-center">
                 <button
@@ -67,8 +65,8 @@ export const EditProfile = ({darkMode,setExperienceActive, ExperienceActive,regi
 
   return(
     <>
-      <form action="" onSubmit={handleSubmit(onSubmit)}>
-      <div className="mb-6">
+      <form action="" onSubmit={handleSubmit(onSubmit)} className='px-6' >
+      <div className="mb-6 ">
             <h3 className="text-xl font-semibold mb-2">Basic info</h3>
             <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'} mb-4`}>
               If you change your name, you may have to re-verify in order to keep your verification.{' '}
@@ -249,9 +247,7 @@ export const Experience = ({darkMode,register, handleSubmit, onSubmit})=>{
   const isCurrentlyWorking = watch('isCurrentlyWorking')
   return(
     <>
-       <form onSubmit={handleSubmit(onSubmit)} className="p-6 pb-24">
-          <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'} mb-6`}>* Indicates required</p>
-
+       <form onSubmit={handleSubmit(onSubmit)} className="px-6 pb-24">
           <div className="space-y-6">
             <div>
               <label htmlFor="title" className="block text-sm font-medium mb-1">
