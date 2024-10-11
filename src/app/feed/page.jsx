@@ -24,7 +24,7 @@ export default  function Feed() {
     if (status === 'loading') return; // Wait for session loading
     if (!session) router.push('/login'); // Redirect if not authenticated
   }, [status, session, router]);
-  console.log(session.user);
+  // console.log(session.user);
   
   
   // console.log(session.user.email);
