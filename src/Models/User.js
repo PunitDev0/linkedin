@@ -7,12 +7,12 @@ const UserSchema = new mongoose.Schema({
     required: true,
   },
   firstname:{
-    default: '',
-    type:String
+    type:String,
+    default: ''
   },
   lastname:{
-    default: '',
-    type:String
+    type:String,
+    default: ''
   },
   email: {
     type: String,
