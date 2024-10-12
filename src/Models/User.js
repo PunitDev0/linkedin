@@ -1,11 +1,7 @@
+import { Type } from 'lucide-react';
 import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    unique: true,
-    required: true,
-  },
   firstname:{
     type:String,
     default: ''
@@ -13,6 +9,14 @@ const UserSchema = new mongoose.Schema({
   lastname:{
     type:String,
     default: ''
+  },
+  username: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  pronouns:{
+   type:String
   },
   email: {
     type: String,
@@ -72,6 +76,7 @@ const UserSchema = new mongoose.Schema({
   about: { type: String },
   headline: { type: String },
   industry: { type: String },
+  currentPosition: {type: String },
   education: [{
     school: String,
     degree: String,

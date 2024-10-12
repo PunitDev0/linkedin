@@ -53,7 +53,7 @@ const {} = userData;
   return (
     (<div
       className="bg-gray-100 dark:bg-black min-h-screen text-gray-900 dark:text-gray-100 transition-colors duration-200">
-        {edit && <ProfileEditor setEdit={setEdit}/>}
+        {edit && <ProfileEditor setEdit={setEdit} username={username}/>}
       <main className="container mx-auto px-4 py-8">
         <div
           className="bg-white dark:bg-[#1B1F23] rounded-lg shadow-sm overflow-hidden mb-6">
@@ -92,7 +92,7 @@ const {} = userData;
               <Pencil size={16} className="text-gray-600 dark:text-gray-300" onClick = {() => setEdit(!edit)} />
             </button>
               <div>
-                <h1 className="text-2xl font-bold">{userData.username}</h1>
+                <h1 className="text-2xl font-bold">{`${userData.firstname} ${userData.lastname}`}</h1>
                 <p className="text-gray-600 dark:text-gray-400">Full Stack Developer & MERN Stack Developer</p>
                 <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">New Delhi, Delhi, India · Contact info</p>
                 <p className="text-sm text-gray-500 dark:text-gray-500">257 followers · 229 connections</p>

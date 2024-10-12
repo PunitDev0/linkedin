@@ -2,15 +2,27 @@
 
 import { useState } from 'react'
 import { X, Info, Plus, Moon, Sun } from 'lucide-react';
+import axios from 'axios';
 import { useForm, Controller } from 'react-hook-form'
 import { useDarkMode } from '@/app/context/DarkModeContext';
-export default function ProfileEditor({setEdit}) {
-  const { register, handleSubmit, watch } = useForm();
+export default function ProfileEditor({setEdit,username}) {
+  console.log(username);
+  
+  const { register, handleSubmit, watch } = useForm();  
   const { darkMode } = useDarkMode();
   const [ExperienceActive,setExperienceActive] = useState(false);
-  const onSubmit = (data) => {
-    console.log('Form Data:', data);
-  };
+
+  const onSubmit = async (data) => {
+    console.log('getting data'+data);
+    
+  try {
+    const response = await axios.post(`/api/user/${username}`, data); // Send the rest of the form data
+    console.log('Profile updated successfully', response.data);
+  } catch (error) {
+    console.error('Error updating profile:', error.response?.data || error.message);
+  }
+};
+
 
   return (
     <div className={`fixed inset-0 z-10`}>
@@ -22,7 +34,7 @@ export default function ProfileEditor({setEdit}) {
         } fixed h-[600px] z-20 rounded-lg shadow-lg lg:max-w-2xl w-[90%] md:w-[80%] lg:w-[60%] m-auto left-[50%] top-[50%] transform -translate-x-1/2 -translate-y-1/2 overflow-auto scrollbar-none`}
         
       >
-             <div className="flex sticky border w-full top-0 px-3 h-16 z-10 bg-[#1B1F23] justify-between items-center  w-full ">
+             <div className="flex sticky border  top-0 px-3 h-16 z-10 bg-[#1B1F23] justify-between items-center  w-full ">
               <h2 className="text-2xl font-bold">Edit intro</h2>
               <div className="flex items-center">
                 <button
@@ -77,30 +89,30 @@ export const EditProfile = ({darkMode,setExperienceActive, ExperienceActive,regi
 
             <div className="space-y-4">
               <div>
-                <label htmlFor="firstName" className="block text-sm font-medium mb-1">
+                <label htmlFor="firstname" className="block text-sm font-medium mb-1">
                   First name*
                 </label>
                 <input
                   type="text"
                   id="firstName"
-                  {...register('firstName', { required: true })}
+                  {...register('firstname', { required: true })}
                   className={`w-full ${darkMode ? 'bg-[#0D0F11] border-gray-700' : 'bg-[#0D0F11] border-gray-300'} border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
                 />
               </div>
 
               <div>
-                <label htmlFor="lastName" className="block text-sm font-medium mb-1">
+                <label htmlFor="lastname" className="block text-sm font-medium mb-1">
                   Last name*
                 </label>
                 <input
                   type="text"
                   id="lastName"
-                  {...register('lastName', { required: true })}
+                  {...register('lastname', { required: true })}
                   className={`w-full ${darkMode ? 'bg-[#0D0F11] border-gray-700' : 'bg-[#0D0F11] border-gray-300'} border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
                 />
               </div>
 
-              <div>
+              {/* <div>
                 <label htmlFor="additionalName" className="block text-sm font-medium mb-1">
                   Additional name
                 </label>
@@ -110,7 +122,7 @@ export const EditProfile = ({darkMode,setExperienceActive, ExperienceActive,regi
                   {...register('additionalName')}
                   className={`w-full ${darkMode ? 'bg-[#0D0F11] border-gray-700' : 'bg-[#0D0F11] border-gray-300'} border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
                 />
-              </div>
+              </div> */}
 
               <div>
                 <label htmlFor="namePronunciation" className="block text-sm font-medium mb-1">
