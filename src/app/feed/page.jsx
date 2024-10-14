@@ -13,13 +13,14 @@ import { ThumbsUp, MessageSquare, Repeat2, Send, Image, Briefcase, FileText, Mor
 import { useDarkMode } from '../context/Context';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
+import { useLoading } from '../context/Context';
 
 export default  function Feed() {
   const router = useRouter();
   const { data: session, status } = useSession();
   const [userData, setUserData] = useState([])
   const [username, setUsername] = useState('');
-  const [loading, setLoading] = useState(true); // State to manage loading
+  // const [loading, setLoading] = useState(true); // State to manage loading
   useEffect(() => {
     // Retrieve the username from localStorage
     const storedUsername = localStorage.getItem('username');

@@ -6,19 +6,29 @@ const DarkModeContext = createContext();
 const LoadingContext = createContext();
 
 export function DarkModeProvider({ children }) {
-  const [darkMode, setDarkMode] = useState(() => {
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
     const isDarkMode = localStorage.getItem('darkMode') === 'true';
-    document.documentElement.classList.toggle('dark', isDarkMode);
-    return isDarkMode;
-  });
+    setDarkMode(isDarkMode);
+
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, []);
 
   const toggleDarkMode = () => {
-    setDarkMode((prev) => {
-      const newDarkMode = !prev;
-      localStorage.setItem('darkMode', newDarkMode.toString());
-      document.documentElement.classList.toggle('dark', newDarkMode);
-      return newDarkMode;
-    });
+    const newDarkMode = !darkMode;
+    setDarkMode(newDarkMode);
+    localStorage.setItem('darkMode', newDarkMode.toString());
+
+    if (newDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   };
 
   return (
@@ -30,6 +40,7 @@ export function DarkModeProvider({ children }) {
 
 export function LoadingProvider({ children }) {
   const [loading, setLoading] = useState(false);
+
   return (
     <LoadingContext.Provider value={{ loading, setLoading }}>
       {children}
@@ -37,5 +48,11 @@ export function LoadingProvider({ children }) {
   );
 }
 
-export const useDarkMode = () => useContext(DarkModeContext);
-export const useLoading = () => useContext(LoadingContext);
+// Custom hook to use dark mode context
+export function useDarkMode() {
+  return useContext(DarkModeContext);
+}
+
+export function useLoading() {
+  return useContext(LoadingContext);
+}
