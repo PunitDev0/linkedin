@@ -10,13 +10,37 @@ import { Switch } from "@/components/ui/feed-ui/switch"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/feed-ui/popover"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/feed-ui/dropdown-menu"
 import { ThumbsUp, MessageSquare, Repeat2, Send, Image, Briefcase, FileText, MoreHorizontal } from 'lucide-react'
-import { useDarkMode } from '../context/DarkModeContext';
+import { useDarkMode } from '../context/Context';
 import { useSession } from 'next-auth/react';
+import axios from 'axios';
 
 export default  function Feed() {
   const router = useRouter();
   const { data: session, status } = useSession();
+  const [userData, setUserData] = useState([])
+  const [username, setUsername] = useState('');
+  const [loading, setLoading] = useState(true); // State to manage loading
+  useEffect(() => {
+    // Retrieve the username from localStorage
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+  }, []);
+  
+  useEffect(() => {
+    const fetchUserData = async () => {
+        try {
+            const response = await axios.get(`/api/feed`);
+            setUserData(response.data.userInfo);
+            console.log(response.data.userInfo);
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
+    fetchUserData();
+}, []);
 
 
 
@@ -72,6 +96,13 @@ export default  function Feed() {
       setComment('')
     }
   }
+  // if (loading) {
+  //   return (
+  //     <div className="flex items-center justify-center h-screen">
+  //       <div className="loader">Loading...</div> {/* Replace with your loader component or spinner */}
+  //     </div>
+  //   );
+  // }
 
   return (
     (<div className={`min-h-screen ${darkMode ? 'dark' : ''}`}>
@@ -84,10 +115,10 @@ export default  function Feed() {
             <Card className="bg-white dark:bg-[#1B1F23]">
               <CardHeader className="text-center" onClick={() => redirect()}>
                 <Avatar className="w-20 h-20 mx-auto" >
-                  <AvatarImage src="/placeholder-user.jpg" alt="Punit Nigam" />
+                  <AvatarImage src={userData.image} alt="Punit Nigam" />
                   <AvatarFallback>PN</AvatarFallback>
                 </Avatar>
-                <h2 className="mt-4 text-xl font-bold">Punit Nigam</h2>
+                <h2 className="mt-4 text-xl font-bold">{`${userData.firstname} ${userData.lastname}`}</h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400">Full Stack Developer & MERN Stack Developer</p>
                 <p className="text-xs text-gray-500 dark:text-gray-400">New Delhi, Delhi</p>
               </CardHeader>

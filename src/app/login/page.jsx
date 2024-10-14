@@ -11,7 +11,7 @@ import { Linkedin, Github, Twitter, Mail, Lock, User, Eye, EyeOff, Google } from
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { useRouter, redirect } from 'next/navigation';
-import { signIn, auth } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { useSession } from "next-auth/react";
 
 export default function LinkedinAuth() {

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Bell, Home, MessageSquare, Search, Users, Briefcase, Moon, Sun } from 'lucide-react'
 import { Button } from "@/components/ui/nav-ui/button"
 import { Input } from "@/components/ui/nav-ui/input"
-import { useDarkMode } from '@/app/context/DarkModeContext'
+import { useDarkMode } from '@/app/context/Context'
 export default function NavbarComponent() {
   const [isSmallScreen, setIsSmallScreen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)

@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { X, Info, Plus, Moon, Sun } from 'lucide-react';
 import axios from 'axios';
 import { useForm, Controller } from 'react-hook-form'
-import { useDarkMode } from '@/app/context/DarkModeContext';
+import { useDarkMode } from '@/app/context/Context';
 export default function ProfileEditor({setEdit,username}) {
   console.log(username);
   

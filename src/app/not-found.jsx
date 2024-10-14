@@ -7,7 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Link from 'next/link'
 import { Button } from '@/components/ui/404/button'
 import { UserCircle, Briefcase, GraduationCap, MapPin, Link as LinkIcon, Search, Sun, Moon } from 'lucide-react'
-import { useDarkMode } from './context/DarkModeContext' 
+import { useDarkMode } from './context/Context' 
 
 gsap.registerPlugin(ScrollTrigger)
 

@@ -10,7 +10,7 @@ import { Facebook, Twitter, Github, Moon, Sun } from 'lucide-react'
 
 export default function LandingPage() {
   const [showPassword, setShowPassword] = useState(false)
-  const [isDarkMode, setIsDarkMode] = useState(false)
+  const [isDarkMode, setIsDarkMode] = useState(true)
   const [isMobile, setIsMobile] = useState(false)
   const [isSignUp, setIsSignUp] = useState(true)
 
@@ -55,7 +55,7 @@ export default function LandingPage() {
     (<div
       className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
       <div
-        className="container mx-auto py-5  flex flex-col md:flex-row items-center justify-between w-full">
+        className="container mx-auto flex flex-col md:flex-row items-center justify-between w-full">
         <AnimatePresence>
           {!isMobile && (
             <motion.div
@@ -63,7 +63,7 @@ export default function LandingPage() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -50 }}
               transition={{ duration: 0.5 }}
-              className="w-full h-full md:w-1/2 relative overflow-hidden rounded-xl mb-8 md:mb-0">
+              className="w-full h-full md:w-1/2 relative  overflow-hidden rounded-xl mb-6 md:mb-0">
               <div className="absolute top-4 left-4 z-10">
                 <motion.h1
                   initial={{ opacity: 0, y: -20 }}
@@ -79,7 +79,7 @@ export default function LandingPage() {
                 transition={{ duration: 0.5 }}
                 src="/images/personaje2.png"
                 alt="3D character illustration"
-                className="w-full h-[300px] md:h-[700px] p-10 object-contain" />
+                className="w-full h-[300px] md:h-[680px] p-10 object-contain" />
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -137,12 +137,15 @@ export default function LandingPage() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* form started */}
+
         <motion.div
           initial="hidden"
           animate="visible"
           variants={containerVariants}
-          className="w-full md:w-1/2 lg:w-1/3 bg-white dark:bg-gray-800 p-6 md:p-8 rounded-xl shadow-lg">
-          <div className="flex justify-between items-center mb-6">
+          className="w-full md:w-1/2 lg:w-1/3 bg-white h-full absolute right-0 dark:bg-gray-800 p-6 md:p-8 rounded-xl shadow-lg">
+          <div className="flex justify-between items-center mb-6">  
             {isMobile && (
               <motion.h1
                 variants={itemVariants}
@@ -150,18 +153,7 @@ export default function LandingPage() {
                 Materialize
               </motion.h1>
             )}
-            <motion.div variants={itemVariants} className="flex items-center">
-              <Switch
-                checked={isDarkMode}
-                onCheckedChange={setIsDarkMode}
-                className="data-[state=checked]:bg-purple-600" />
-              <span className="sr-only">Toggle dark mode</span>
-              {isDarkMode ? (
-                <Moon className="h-4 w-4 text-purple-400 ml-2" />
-              ) : (
-                <Sun className="h-4 w-4 text-purple-600 ml-2" />
-              )}
-            </motion.div>
+            
           </div>
           <motion.h2
             variants={itemVariants}

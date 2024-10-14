@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { Edit, Plus, Eye, BarChart2, Search as SearchIcon, Moon, Sun, Pencil, Fullscreen } from 'lucide-react';
-import { useDarkMode } from '@/app/context/DarkModeContext'; 
+import { useDarkMode } from '@/app/context/Context'; 
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import Image from 'next/image';
@@ -11,6 +11,12 @@ import ProfileEditor from '@/components/profile-editor';
 export default function ProfilePage({params}) {
     const { username } = params;
     // console.log(username);
+    useEffect(() => {
+      if (username) {
+        // Save the username to localStorage
+        localStorage.setItem('username', username);
+      }
+    }, [username]);
   const [userData, setUserData] = useState([])
 
   const { darkMode } = useDarkMode();
@@ -38,9 +44,7 @@ export default function ProfilePage({params}) {
         } catch (err) {
             console.log(err);
             
-        } finally {
-            setLoading(false);
-        }
+        } 
     };
 
     fetchUserData();
@@ -59,7 +63,7 @@ const {} = userData;
           className="bg-white dark:bg-[#1B1F23] rounded-lg shadow-sm overflow-hidden mb-6">
           <div className="h-32 md:h-48 bg-[#1B1F23] dark:bg-[#1B1F23] relative">
             <Image
-              src="/images/banner.jpeg"
+              src=""
               alt="Banner"
               width={120}
               height={120}
@@ -76,7 +80,7 @@ const {} = userData;
               className="absolute -top-16 left-4 md:left-6 w-32 h-32 rounded-full border-4 border-white dark:border-[#1B1F23] overflow-hidden">
                 
               <img
-                src=""
+                src={userData.image}
                 alt="Punit Nigam"
                 className="w-full h-full object-cover" />
                 
