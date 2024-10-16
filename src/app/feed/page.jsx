@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from 'next/navigation'
 import { redirect } from 'next/navigation';
-import { useState,useEffect } from 'react'
+import { useState,useEffect, useRef } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/feed-ui/avatar"
 import { Button } from "@/components/ui/feed-ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/feed-ui/card"
@@ -14,12 +14,16 @@ import { useDarkMode } from '../context/Context';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import { useLoading } from '../context/Context';
-
+import { LinkedInPostCreatorComponent } from '@/components/linked-in-post-creator';
 export default  function Feed() {
   const router = useRouter();
   const { data: session, status } = useSession();
   const [userData, setUserData] = useState([])
   const [username, setUsername] = useState('');
+  const [mediaSelected, setMediaSelected] = useState(false);
+  const [triggerFunction, setTriggerFunction] = useState(false);
+
+
   // const [loading, setLoading] = useState(true); // State to manage loading
   useEffect(() => {
     // Retrieve the username from localStorage
@@ -39,20 +43,14 @@ export default  function Feed() {
             console.log(err);
         }
     };
-
     fetchUserData();
 }, []);
-
-
 
   useEffect(() => {
     if (status === 'loading') return; // Wait for session loading
     if (!session) router.push('/login'); // Redirect if not authenticated
   }, [status, session, router]);
-  // console.log(session.user);
-  
-  
-  // console.log(session.user.email);
+    
   const { darkMode, toggleDarkMode } = useDarkMode();
   const [isLiked, setIsLiked] = useState(false)
   const [showComments, setShowComments] = useState(false) 
@@ -97,6 +95,11 @@ export default  function Feed() {
       setComment('')
     }
   }
+  const handleClick = () => {
+    setMediaSelected(true)
+    setTriggerFunction(prev => !prev); // Toggle state to trigger the function
+  };
+
   // if (loading) {
   //   return (
   //     <div className="flex items-center justify-center h-screen">
@@ -108,9 +111,9 @@ export default  function Feed() {
   return (
     (<div className={`min-h-screen ${darkMode ? 'dark' : ''}`}>
       <div className="bg-[#F4F2EE] dark:bg-black text-gray-900 dark:text-white p-4">
-        {/* <div className="container mx-auto flex justify-end mb-4">
-          <Switch checked={darkMode} onCheckedChange={toggleDarkMode} />
-        </div> */}
+
+          {mediaSelected && <LinkedInPostCreatorComponent onTrigger={triggerFunction} />}
+
         <main className="container mx-auto flex flex-col md:flex-row gap-8">
           <aside className="w-full md:w-1/6">
             <Card className="bg-white dark:bg-[#1B1F23]">
@@ -142,6 +145,8 @@ export default  function Feed() {
           </aside>
           <section className="w-full md:w-1/2">
             <Card className="bg-white dark:bg-[#1B1F23] mb-4">
+              
+
               <CardContent className="p-4">
                 <div className="flex items-center space-x-4">
                   <Avatar>
@@ -151,7 +156,7 @@ export default  function Feed() {
                   <Input placeholder="Start a post" className="bg-gray-100 border-gray-500 dark:bg-[#1B1F23]" />
                 </div>
                 <div className="flex justify-between mt-4">
-                  <Button variant="ghost" size="sm">
+                  <Button variant="ghost" size="sm" onClick={handleClick} >
                     <Image className="mr-2 h-4 w-4" /> Media
                   </Button>
                   <Button variant="ghost" size="sm">
@@ -162,6 +167,8 @@ export default  function Feed() {
                   </Button>
                 </div>
               </CardContent>
+
+
             </Card>
             <Card className="bg-white dark:bg-[#1B1F23]">
               <CardHeader>
