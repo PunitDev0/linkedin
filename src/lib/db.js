@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 export async function dbConnect(){
     try{
-        mongoose.connect('mongodb://127.0.0.1:27017/linkedin')
+        mongoose.connect('mongodb+srv://punit:punit1234@hotels.1faa9.mongodb.net/linkedin')
           
           const db = mongoose.connection
           
