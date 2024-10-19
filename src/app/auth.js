@@ -105,5 +105,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       
       return true; // Important to return true if the sign-in is successful
     }
-  }
+  },
+  trustHost: true,  // Explicitly trust your local and production hosts
+  secret: process.env.NEXTAUTH_SECRET, // Ensure you have a strong secret set
 });

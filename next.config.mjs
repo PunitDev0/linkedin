@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    experimental: {
-        appDir: false, // or true, based on your app structure
+      reactStrictMode: true,
+      experimental: {
+        appDir: true, // Remove or enable depending on your setup
       },
       images: {
         domains: ['avatars.githubusercontent.com'],
