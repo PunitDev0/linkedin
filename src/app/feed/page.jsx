@@ -14,13 +14,13 @@ import { useDarkMode } from '../context/Context';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import { useLoading } from '../context/Context';
-import { LinkedInPostCreatorComponent } from '@/components/linked-in-post-creator';
+import { LinkedInPost } from '@/components/linkedin-post-creator';
 export default  function Feed() {
   const router = useRouter();
   const { data: session, status } = useSession();
   const [userData, setUserData] = useState([])
   const [username, setUsername] = useState('');
-  const [mediaSelected, setMediaSelected] = useState(false);
+  const [openPost, setopenPost] = useState(false);
   const [triggerFunction, setTriggerFunction] = useState(false);
 
 
@@ -96,7 +96,7 @@ export default  function Feed() {
     }
   }
   const handleClick = () => {
-    setMediaSelected(true)
+    setopenPost(true)
     setTriggerFunction(prev => !prev); // Toggle state to trigger the function
   };
 
@@ -112,7 +112,7 @@ export default  function Feed() {
     (<div className={`min-h-screen ${darkMode ? 'dark' : ''}`}>
       <div className="bg-[#F4F2EE] dark:bg-black text-gray-900 dark:text-white p-4">
 
-          {mediaSelected && <LinkedInPostCreatorComponent onTrigger={triggerFunction} />}
+          {openPost && <LinkedInPost onTrigger={triggerFunction} setopenPost={setopenPost} />}
 
         <main className="container mx-auto flex flex-col md:flex-row gap-8">
           <aside className="w-full md:w-1/6">

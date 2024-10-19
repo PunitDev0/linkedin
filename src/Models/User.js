@@ -84,6 +84,13 @@ const UserSchema = new mongoose.Schema({
     startDate: Date,
     endDate: Date,
   }],
+  contact:[{
+    phone: Number,
+    address: String,
+    month: Number,
+    day: Number,
+    year: Number,
+  }],
   connections: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

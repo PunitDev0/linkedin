@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { X, Info, Plus, Moon, Sun } from 'lucide-react';
+import { X, Info, Plus, Moon, Sun, Upload, RotateCw, Crop } from 'lucide-react';
 import axios from 'axios';
 import { useForm, Controller } from 'react-hook-form'
 import { useDarkMode } from '@/app/context/Context';
@@ -13,7 +13,7 @@ export default function ProfileEditor({setEdit,username}) {
   const [ExperienceActive,setExperienceActive] = useState(false);
 
   const onSubmit = async (data) => {
-    console.log('getting data'+data);
+    console.log(data);
     
   try {
     const response = await axios.post(`/api/user/${username}`, data); // Send the rest of the form data
@@ -30,7 +30,7 @@ export default function ProfileEditor({setEdit,username}) {
 
       <div
         className={`${
-          darkMode ? 'bg-[#1B1F23] text-gray-200' : 'bg-[#0D0F11] text-gray-800'
+          darkMode ? 'bg-[#1B1F23] text-gray-200' : 'bg-white text-gray-800'
         } fixed h-[600px] z-20 rounded-lg shadow-lg lg:max-w-2xl w-[90%] md:w-[80%] lg:w-[60%] m-auto left-[50%] top-[50%] transform -translate-x-1/2 -translate-y-1/2 overflow-auto scrollbar-none`}
         
       >
@@ -54,7 +54,10 @@ export default function ProfileEditor({setEdit,username}) {
           </p>
 
           {ExperienceActive ? null : <EditProfile darkMode={darkMode} setExperienceActive={setExperienceActive} ExperienceActive={ExperienceActive} register={register} handleSubmit={handleSubmit} onSubmit={onSubmit}/>}
-          {ExperienceActive && <Experience setExperienceActive={setExperienceActive} register={register} handleSubmit={handleSubmit} onSubmit={onSubmit}/>}
+          {ExperienceActive && <Experience setExperienceActive={setExperienceActive} register={register} handleSubmit={handleSubmit} 
+          onSubmit={onSubmit}/>}
+          <Phone  register={register} handleSubmit={handleSubmit} onSubmit={onSubmit} darkMode={darkMode}/>
+          <Education register={register} handleSubmit={handleSubmit} onSubmit={onSubmit} darkMode={darkMode} />
 
           <div className="flex sticky top-0 h-16 z-10 bg-[#1B1F23] justify-between items-center  w-full">
           <button
@@ -95,7 +98,7 @@ export const EditProfile = ({darkMode,setExperienceActive, ExperienceActive,regi
                 <input
                   type="text"
                   id="firstName"
-                  {...register('firstname', { required: true })}
+                  {...register('firstname')}
                   className={`w-full ${darkMode ? 'bg-[#0D0F11] border-gray-700' : 'bg-[#0D0F11] border-gray-300'} border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
                 />
               </div>
@@ -107,7 +110,7 @@ export const EditProfile = ({darkMode,setExperienceActive, ExperienceActive,regi
                 <input
                   type="text"
                   id="lastName"
-                  {...register('lastname', { required: true })}
+                  {...register('lastname')}
                   className={`w-full ${darkMode ? 'bg-[#0D0F11] border-gray-700' : 'bg-[#0D0F11] border-gray-300'} border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
                 />
               </div>
@@ -266,7 +269,7 @@ export const Experience = ({darkMode,register, handleSubmit, onSubmit})=>{
                 Title*
               </label>
               <input
-                {...register('title', { required: true })}
+                {...register('title')}
                 type="text"
                 id="title"
                 className={`w-full ${darkMode ? 'bg-[#0D0F11] border-gray-700' : 'bg-[#0D0F11] border-gray-300'} border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
@@ -299,7 +302,7 @@ export const Experience = ({darkMode,register, handleSubmit, onSubmit})=>{
                 Company name*
               </label>
               <input
-                {...register('companyName', { required: true })}
+                {...register('companyName')}
                 type="text"
                 id="companyName"
                 className={`w-full ${darkMode ? 'bg-[#0D0F11] border-gray-700' : 'bg-[#0D0F11] border-gray-300'} border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
@@ -312,7 +315,7 @@ export const Experience = ({darkMode,register, handleSubmit, onSubmit})=>{
                   Start date*
                 </label>
                 <input
-                  {...register('startDate', { required: true })}
+                  {...register('startDate')}
                   type="date"
                   id="startDate"
                   className={`w-full ${darkMode ? 'bg-[#0D0F11] border-gray-700' : 'bg-[#0D0F11] border-gray-300'} border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
@@ -388,5 +391,203 @@ export const Experience = ({darkMode,register, handleSubmit, onSubmit})=>{
         </form>
 
     </>
+  )
+}
+
+export const Phone = ({darkMode,register, handleSubmit, onSubmit})=>{
+
+  const currentYear = new Date().getFullYear()
+  const years = Array.from({ length: 100 }, (_, i) => currentYear - i)
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ]
+  const days = Array.from({ length: 31 }, (_, i) => i + 1)
+
+  return (
+        <form onSubmit={handleSubmit(onSubmit)} className="p-6 pb-24">
+          <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'} mb-6`}>* Indicates required</p>
+
+          <div className="space-y-6">
+            <div>
+              <label htmlFor="phone" className="block text-sm font-medium mb-1">
+                Phone Number*
+              </label>
+              <input
+                {...register('phone')}
+                type="tel"
+                id="phone"
+                className={`w-full ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'} border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="address" className="block text-sm font-medium mb-1">
+                Address
+              </label>
+              <textarea
+                {...register('address')}
+                id="address"
+                rows={3}
+                className={`w-full ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'} border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
+              ></textarea>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Birthday
+              </label>
+              <div className="flex space-x-4">
+                <div className="flex-1">
+                  <select
+                    {...register('birthMonth')}
+                    className={`w-full ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'} border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
+                  >
+                    <option value="">Month</option>
+                    {months.map((month, index) => (
+                      <option key={month} value={index + 1}>{month}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex-1">
+                  <select
+                    {...register('birthDay')}
+                    className={`w-full ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'} border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
+                  >
+                    <option value="">Day</option>
+                    {days.map(day => (
+                      <option key={day} value={day}>{day}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex-1">
+                  <select
+                    {...register('birthYear')}
+                    className={`w-full ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'} border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
+                  >
+                    <option value="">Year</option>
+                    {years.map(year => (
+                      <option key={year} value={year}>{year}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+  )
+}
+export const Education = ({darkMode,register, handleSubmit, onSubmit})=>{
+
+  const currentYear = new Date().getFullYear()
+  const years = Array.from({ length: 100 }, (_, i) => currentYear - i)
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ]
+  const days = Array.from({ length: 31 }, (_, i) => i + 1)
+
+  return (
+        <form onSubmit={handleSubmit(onSubmit)} className="p-6 pb-24">
+          <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'} mb-6`}>* Indicates required</p>
+
+          <div className="space-y-6">
+            <div>
+              <label htmlFor="phone" className="block text-sm font-medium mb-1">
+                School
+              </label>
+              <input
+                {...register('school')}
+                type="tel"
+                id="phone"
+                className={`w-full ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'} border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="phone" className="block text-sm font-medium mb-1">
+                Degree
+              </label>
+              <input
+                {...register('degree')}
+                type="tel"
+                id="phone"
+                className={`w-full ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'} border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="phone" className="block text-sm font-medium mb-1">
+                Fiend Of Study
+              </label>  
+              <input
+                {...register('field_of_study')}
+                type="tel"
+                id="phone"
+                className={`w-full ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'} border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                End Date
+              </label>
+              <div className="flex space-x-4">
+                <div className="flex-1">
+                  <select
+                    {...register('startMonth')}
+                    className={`w-full ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'} border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
+                  >
+                    <option value="">Month</option>
+                    {months.map((month, index) => (
+                      <option key={month} value={index + 1}>{month}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex-1">
+                  <select
+                    {...register('startYear')}
+                    className={`w-full ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'} border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
+                  >
+                    <option value="">Year</option>
+                    {years.map(year => (
+                      <option key={year} value={year}>{year}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                End Date
+              </label>
+              <div className="flex space-x-4">
+                <div className="flex-1">
+                  <select
+                    {...register('endhMonth')}
+                    className={`w-full ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'} border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
+                  >
+                    <option value="">Month</option>
+                    {months.map((month, index) => (
+                      <option key={month} value={index + 1}>{month}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex-1">
+                  <select
+                    {...register('endYear')}
+                    className={`w-full ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'} border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
+                  >
+                    <option value="">Year</option>
+                    {years.map(year => (
+                      <option key={year} value={year}>{year}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
   )
 }
