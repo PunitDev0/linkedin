@@ -14,7 +14,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
     GitHubProvider({
       clientId: process.env.GITHUB_CLIENT_ID, // Add GitHub client ID
-      clientSecret: process.env.GITHUB_CLIENT_SECRET, // Add GitHub client secret
+      clientSecret: process.env.GITHUB_CLIENT_SECRET, 
     }),
     CredentialsProvider({
       name: "Credentials",
