@@ -36,7 +36,7 @@ export default function ProfileEditor({ setEdit, username }) {
       <div
         className={`${
           darkMode ? "bg-[#1B1F23] text-gray-200" : "bg-white text-gray-800"
-        } fixed h-[600px] z-20 rounded-lg shadow-lg lg:max-w-2xl w-[90%] md:w-[80%] lg:w-[60%] m-auto left-[50%] top-[50%] transform -translate-x-1/2 -translate-y-1/2 overflow-auto scrollbar-none`}
+        } fixed sm:h-[600px] h-full z-20 rounded-lg shadow-lg lg:max-w-2xl w-[100%] md:w-[80%] lg:w-[60%] m-auto left-[50%] top-[50%] transform -translate-x-1/2 -translate-y-1/2 overflow-auto scrollbar-none`}
       >
         {/* Header with Edit button */}
         <div className="flex sticky top-0 border-b px-3 h-16 z-10 bg-[#1B1F23] justify-between items-center w-full">
