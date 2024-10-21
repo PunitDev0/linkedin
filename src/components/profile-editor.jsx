@@ -16,7 +16,7 @@ export default function ProfileEditor({ setEdit, username }) {
   const [activeSection, setActiveSection] = useState("editProfile");
   const onSubmit = async (data) => {
     console.log(data);
-
+    // window.reload()
     try {
       const response = await axios.post(`/api/user/${username}`, data); // Send the rest of the form data
       console.log("Profile updated successfully", response.data);
@@ -381,15 +381,15 @@ export const EditProfile = ({
           <div className="space-y-4">
             <div>
               <label
-                htmlFor="firstname"
+                htmlFor="country"
                 className="block text-sm font-medium mb-1"
               >
                 Countery/Region*
               </label>
               <input
                 type="text"
-                id="firstName"
-                {...register("firstname")}
+                id="country"
+                {...register("country")}
                 className={`w-full ${
                   darkMode
                     ? "bg-[#0D0F11] border-gray-700"
@@ -399,15 +399,15 @@ export const EditProfile = ({
             </div>
             <div>
               <label
-                htmlFor="firstname"
+                htmlFor="city"
                 className="block text-sm font-medium mb-1"
               >
                 City
               </label>
               <input
                 type="text"
-                id="firstName"
-                {...register("firstname")}
+                id="city"
+                {...register("city")}
                 className={`w-full ${
                   darkMode
                     ? "bg-[#0D0F11] border-gray-700"
@@ -416,32 +416,6 @@ export const EditProfile = ({
               />
             </div>
           </div>
-        
-        <div className="mb-6">
-          <h3 className="text-xl font-semibold mb-2">Other info</h3>
-          <div>
-            <label htmlFor="aboutMe" className="block text-sm font-medium mb-1">
-              About me
-            </label>
-            <textarea
-              id="aboutMe"
-              {...register("aboutMe")}
-              rows={3}
-              className={`w-full ${
-                darkMode
-                  ? "bg-[#0D0F11] border-gray-700"
-                  : "bg-[#0D0F11] border-gray-300"
-              } border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
-            />
-            <p
-              className={`text-sm ${
-                darkMode ? "text-gray-400" : "text-gray-600"
-              } mt-1`}
-            >
-              0/250 characters
-            </p>
-          </div>
-        </div>
       </form>
     </>
   );
