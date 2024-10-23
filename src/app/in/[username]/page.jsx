@@ -7,8 +7,11 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import Image from 'next/image';
 import ProfileEditor from '@/components/profile-editor';
-
+import { BackgroudImageEdit } from '@/components/BackgroundImageUpload';
+import { ProfilePhotoEditor } from '@/components/photo-editor';
 export default function ProfilePage({params}) {
+  const [background, setbackground] = useState(false)
+  const [ProfileImage, setProfileImage] = useState(false);
     const { username } = params;
     // console.log(username);
     useEffect(() => {
@@ -22,18 +25,6 @@ export default function ProfilePage({params}) {
   const { darkMode } = useDarkMode();
   const [edit, setEdit] = useState(false)
   
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Simulate a delay of 3 seconds before loading the page content
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-
-    // Clean up the timer
-    return () => clearTimeout(timer);
-  }, []);
-
   useEffect(() => {
     const fetchUserData = async () => {
         try {
@@ -46,18 +37,20 @@ export default function ProfilePage({params}) {
             
         } 
     };
-
     fetchUserData();
 }, [username]);
     console.log(userData);
-    
 const {} = userData;
 
 
   return (
     (<div
       className="bg-gray-100 dark:bg-black min-h-screen text-gray-900 dark:text-gray-100 transition-colors duration-200">
-        {edit && <ProfileEditor setEdit={setEdit} username={username}/>}
+        {ProfileImage && <ProfilePhotoEditor setProfileImage={setProfileImage} 
+        ProfileImage={ProfileImage}/>}
+        {background && <BackgroudImageEdit setbackground={setbackground}/>}
+        {edit && <ProfileEditor setEdit={setEdit} username={username} />}
+
       <main className="container mx-auto px-4 py-8">
         <div
           className="bg-white dark:bg-[#1B1F23] rounded-lg shadow-sm overflow-hidden mb-6">
@@ -70,19 +63,20 @@ const {} = userData;
               className="w-full h-full object-cover" />
             <button
               className="absolute top-2 right-2 p-2 bg-white dark:bg-[#1B1F23] rounded-full shadow-md">
-              <Pencil size={16} className="text-gray-600 dark:text-gray-300" />
+              <Pencil size={16} onClick={()=> setbackground(!background)} className="text-gray-600 dark:text-gray-300" />
             </button>
            
           </div>
           <div className="p-4 md:p-6 relative">
             <div
-             
               className="absolute -top-16 left-4 md:left-6 w-32 h-32 rounded-full border-4 border-white dark:border-[#1B1F23] overflow-hidden">
                 
               <img
                 src={userData.image}
                 alt="Punit Nigam"
-                className="w-full h-full object-cover" />
+                className="w-full h-full object-cover"
+                onClick={()=>setProfileImage(true)}
+                />
                 
               <div
                 className="absolute bottom-0 left-0 right-0 bg-green-500 text-white text-xs text-center py-1">

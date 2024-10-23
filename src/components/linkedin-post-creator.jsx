@@ -3,10 +3,10 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import axios from 'axios'
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Textarea } from "@/components/ui/textarea"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Post-ui/avatar"
+import { Button } from "@/components/ui/Post-ui/button"
+import { Card, CardContent } from "@/components/ui/Post-ui/card"
+import { Textarea } from "@/components/ui/Post-ui/textarea"
 import { X, Smile, Trash, Plus, Upload, Moon, Sun } from 'lucide-react'
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'

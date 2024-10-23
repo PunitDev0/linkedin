@@ -5,21 +5,19 @@ import { X, Info, Plus, Moon, Sun, Upload, RotateCw, Crop } from "lucide-react";
 import axios from "axios";
 import { useForm, Controller } from "react-hook-form";
 import { useDarkMode } from "@/app/context/Context";
-export default function ProfileEditor({ setEdit, username }) {
+import { SkillsInputComponent } from "./skills-input";
+export default function ProfileEditor({ setEdit, username, reload }) {
   console.log(username);
-
   const { register, handleSubmit, watch } = useForm();
   const { darkMode } = useDarkMode();
-  const [ExperienceActive, setExperienceActive] = useState(false);
-  const [EducationActive, setEditEducationActive] = useState(false)
-  const [PhoneActive, setPhoneActive] = useState(false)
   const [activeSection, setActiveSection] = useState("editProfile");
+
   const onSubmit = async (data) => {
     console.log(data);
-    // window.reload()
     try {
       const response = await axios.post(`/api/user/${username}`, data); // Send the rest of the form data
       console.log("Profile updated successfully", response.data);
+      setreload(true)
     } catch (error) {
       console.error(
         "Error updating profile:",
@@ -27,7 +25,6 @@ export default function ProfileEditor({ setEdit, username }) {
       );
     }
   };
-
   return (
     <div className={`fixed inset-0 z-10`}>
       {/* Modal backdrop */}
@@ -36,7 +33,7 @@ export default function ProfileEditor({ setEdit, username }) {
       <div
         className={`${
           darkMode ? "bg-[#1B1F23] text-gray-200" : "bg-white text-gray-800"
-        } fixed sm:h-[600px] h-full z-20 rounded-lg shadow-lg lg:max-w-2xl w-[100%] md:w-[80%] lg:w-[60%] m-auto left-[50%] top-[50%] transform -translate-x-1/2 -translate-y-1/2 overflow-auto scrollbar-none`}
+        } fixed sm:h-[600px] h-[100vh] z-20 rounded-lg shadow-lg lg:max-w-2xl w-[100%] md:w-[80%] lg:w-[60%] m-auto left-[50%] top-[50%] transform -translate-x-1/2 -translate-y-1/2 overflow-auto scrollbar-none`}
       >
         {/* Header with Edit button */}
         <div className="flex sticky top-0 border-b px-3 h-16 z-10 bg-[#1B1F23] justify-between items-center w-full">
@@ -74,7 +71,7 @@ export default function ProfileEditor({ setEdit, username }) {
               setActiveSection={setActiveSection}
             />
           )}
-          {activeSection === "experience" && (
+          {activeSection === "position" && (
             <Experience
               register={register}
               handleSubmit={handleSubmit}
@@ -98,6 +95,7 @@ export default function ProfileEditor({ setEdit, username }) {
             />
           )}
         </div>
+        <SkillsInputComponent/>
 
         {/* Fixed Save button at the bottom */}
         <div className="sticky bottom-0 border-t px-3 h-16 bg-[#1B1F23] flex justify-end items-center">
@@ -630,7 +628,7 @@ export const Phone = ({ darkMode, register, handleSubmit, onSubmit }) => {
   const days = Array.from({ length: 31 }, (_, i) => i + 1);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="p-6 pb-24">
+    <form onSubmit={handleSubmit(onSubmit)} className="px-6">
       <p
         className={`text-sm ${
           darkMode ? "text-gray-400" : "text-gray-600"
@@ -752,7 +750,7 @@ export const Education = ({ darkMode, register, handleSubmit, onSubmit }) => {
   const days = Array.from({ length: 31 }, (_, i) => i + 1);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="p-6 pb-24">
+    <form onSubmit={handleSubmit(onSubmit)} className="p-6 h-full pb-24">
       <p
         className={`text-sm ${
           darkMode ? "text-gray-400" : "text-gray-600"
