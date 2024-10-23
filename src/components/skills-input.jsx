@@ -88,9 +88,9 @@ export function SkillsInputComponent() {
             </Button>
           </div>
         )}
-        <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+        {/* <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white">
           Save
-        </Button>
+        </Button> */}
       </form>
     </div>
   )
