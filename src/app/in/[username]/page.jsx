@@ -11,6 +11,7 @@ import { BackgroudImageEdit } from '@/components/BackgroundImageUpload';
 import { ProfilePhotoEditor } from '@/components/photo-editor';
 export default function ProfilePage({params}) {
   const [background, setbackground] = useState(false)
+  const [message, setMessage] = useState("");
   const [ProfileImage, setProfileImage] = useState(false);
     const { username } = params;
     // console.log(username);
@@ -30,6 +31,7 @@ export default function ProfilePage({params}) {
         try {
             const response = await axios.get(`/api/user/${username}`);
             setUserData(response.data);
+            setMessage(response.data.message)
             console.log(response);
             ;
         } catch (err) {
@@ -38,7 +40,7 @@ export default function ProfilePage({params}) {
         } 
     };
     fetchUserData();
-}, [username]);
+}, [username,message]);
     console.log(userData);
 const {} = userData;
 
