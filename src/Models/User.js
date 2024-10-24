@@ -28,7 +28,7 @@ const UserSchema = new mongoose.Schema({
     // required: true,
   },
   backgroundImage: { type: String }, 
-  image:{
+  profilePicture: {
     type: String,
     default: 'default-profile-picture-url',
   },
@@ -47,15 +47,15 @@ const UserSchema = new mongoose.Schema({
     default: '',
     sparse: true,
   },
-  profilePicture: {
-    type: String,
-    default: 'default-profile-picture-url',
-  },
   bio: {
     type: String,
     default: '',
   },
-  location: {
+  country: {
+    type: String,
+    default: '',
+  },
+  city:{
     type: String,
     default: '',
   },
