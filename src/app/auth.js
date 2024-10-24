@@ -13,8 +13,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
     GitHubProvider({
-      clientId: process.env.GITHUB_CLIENT_ID_Deploy , // Add GitHub client ID
-      clientSecret: process.env.GITHUB_CLIENT_SECRET_Deploy, 
+      clientId: process.env.GITHUB_CLIENT_ID || process.env.GITHUB_CLIENT_ID_Deploy , // Add GitHub client ID
+      clientSecret: process.env.GITHUB_CLIENT_SECRET || process.env.GITHUB_CLIENT_Deploy, 
     }),
     CredentialsProvider({
       name: "Credentials",
