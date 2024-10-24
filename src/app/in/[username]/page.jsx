@@ -15,32 +15,36 @@ export default function ProfilePage({params}) {
   const [ProfileImage, setProfileImage] = useState(false);
     const { username } = params;
     // console.log(username);
+    const [userData, setUserData] = useState([])
+    
+    const { darkMode } = useDarkMode();
+    const [edit, setEdit] = useState(false)
+
+      const fetchUserData = async () => {
+        try {
+          const response = await axios.get(`/api/user/${username}`);
+          setUserData(response.data);
+          setMessage(response.data.message)
+          console.log(response);
+          ;
+        } catch (err) {
+          console.log(err);
+          
+        } 
+      };
     useEffect(() => {
       if (username) {
         // Save the username to localStorage
         localStorage.setItem('username', username);
+        fetchUserData();
       }
     }, [username]);
-  const [userData, setUserData] = useState([])
 
-  const { darkMode } = useDarkMode();
-  const [edit, setEdit] = useState(false)
-  
-  useEffect(() => {
-    const fetchUserData = async () => {
-        try {
-            const response = await axios.get(`/api/user/${username}`);
-            setUserData(response.data);
-            setMessage(response.data.message)
-            console.log(response);
-            ;
-        } catch (err) {
-            console.log(err);
-            
-        } 
-    };
-    fetchUserData();
-}, [username,message]);
+     // Function to refresh user data after update
+  const refreshData = () => {
+    fetchUserData(); // Re-fetch data to reflect updates
+  };
+
     console.log(userData);
 const {} = userData;
 
@@ -51,7 +55,7 @@ const {} = userData;
         {ProfileImage && <ProfilePhotoEditor setProfileImage={setProfileImage} 
         ProfileImage={ProfileImage}/>}
         {background && <BackgroudImageEdit setbackground={setbackground}/>}
-        {edit && <ProfileEditor setEdit={setEdit} username={username} />}
+        {edit && <ProfileEditor setEdit={setEdit} username={username} refreshData={refreshData}/>}
 
       <main className="container mx-auto px-4 py-8">
         <div

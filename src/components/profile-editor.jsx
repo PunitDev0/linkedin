@@ -7,7 +7,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useDarkMode } from "@/app/context/Context";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-export default function ProfileEditor({ setEdit, username,}) {
+export default function ProfileEditor({ setEdit, username,refreshData}) {
   console.log(username);
   const { register, handleSubmit, control, setValue, getValues } = useForm({
     defaultValues: {
@@ -24,7 +24,7 @@ export default function ProfileEditor({ setEdit, username,}) {
     try {
       const response = await axios.post(`/api/user/${username}`, data); // Send the rest of the form data
       console.log("Profile updated successfully", response.data);
-      setreload(true)
+      refreshData()
     } catch (error) {
       console.error(
         "Error updating profile:",
