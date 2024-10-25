@@ -13,6 +13,7 @@ export default function ProfilePage({params}) {
   const [background, setbackground] = useState(false)
   const [message, setMessage] = useState("");
   const [ProfileImage, setProfileImage] = useState(false);
+  const [about, setAbout] = useState(false)
     const { username } = params;
     // console.log(username);
     const [userData, setUserData] = useState([])
@@ -54,8 +55,8 @@ const {} = userData;
       className="bg-gray-100 dark:bg-black min-h-screen text-gray-900 dark:text-gray-100 transition-colors duration-200">
         {ProfileImage && <ProfilePhotoEditor setProfileImage={setProfileImage} 
         ProfileImage={ProfileImage}/>}
-        {background && <BackgroudImageEdit setbackground={setbackground}/>}
-        {edit && <ProfileEditor setEdit={setEdit} username={username} refreshData={refreshData}/>}
+        {background && <BackgroudImageEdit setbackground={setbackground} username={username} refreshData={refreshData}/>}
+        {edit && <ProfileEditor about={about} setAbout={setAbout} setEdit={setEdit} username={username} refreshData={refreshData}/>}
 
       <main className="container mx-auto px-4 py-8">
         <div
@@ -157,7 +158,11 @@ const {} = userData;
               className="bg-white dark:bg-[#1B1F23] rounded-lg shadow-sm p-4 md:p-6 mb-6">
               <h2 className="text-xl font-semibold mb-4 flex justify-between items-center">
                 About
-                <Edit className="text-gray-400 dark:text-gray-500 cursor-pointer" size={20} />
+                <Edit className="text-gray-400 dark:text-gray-500 cursor-pointer" size={20}
+                 onClick={() => {
+                  setAbout(true);
+                  setEdit(!edit);
+                }} />
               </h2>
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 Passionate Front-End & Back-End Specialist with expertise in HTML, CSS, React, Tailwind CSS, PHP, MySQL, and MongoDB. 

@@ -7,7 +7,9 @@ import { useForm, Controller } from "react-hook-form";
 import { useDarkMode } from "@/app/context/Context";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-export default function ProfileEditor({ setEdit, username,refreshData}) {
+import Spinner from "./spinner";
+export default function ProfileEditor({ setEdit, username,refreshData,setAbout,about}) {
+  const [loading, setLoading] = useState(false);
   console.log(username);
   const { register, handleSubmit, control, setValue, getValues } = useForm({
     defaultValues: {
@@ -21,6 +23,7 @@ export default function ProfileEditor({ setEdit, username,refreshData}) {
   const onSubmit = async (data) => {
     console.log(data);
     console.log('Submitted skills:', data.skills);
+    setLoading(true)
     try {
       const response = await axios.post(`/api/user/${username}`, data); // Send the rest of the form data
       console.log("Profile updated successfully", response.data);
@@ -30,6 +33,8 @@ export default function ProfileEditor({ setEdit, username,refreshData}) {
         "Error updating profile:",
         error.response?.data || error.message
       );
+    }finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -54,7 +59,10 @@ export default function ProfileEditor({ setEdit, username,refreshData}) {
                 ? "text-gray-400 hover:text-gray-200"
                 : "text-gray-600 hover:text-gray-800"
             }`}
-            onClick={() => setEdit()}
+            onClick={() => {
+              setEdit()
+              setAbout(false)
+            }}
             type="button"
           >
             <X size={24} />
@@ -62,7 +70,18 @@ export default function ProfileEditor({ setEdit, username,refreshData}) {
         </div>
 
         {/* Scrollable content */}
-        <div className="overflow-x-auto px-4 py-6">
+        
+        {/* Fixed Save button at the bottom */}
+        {about ? (
+            <div className="overflow-x-auto px-4 py-6 h-full">
+             <About 
+              register={register}
+              handleSubmit={handleSubmit}
+              onSubmit={onSubmit}
+              darkMode={darkMode}
+            />
+           </div>
+          ) : <div className="overflow-x-auto px-4 py-6">
           <p
             className={`text-sm ${
               darkMode ? "text-gray-400" : "text-gray-600"
@@ -70,7 +89,6 @@ export default function ProfileEditor({ setEdit, username,refreshData}) {
           >
             * Indicates required
           </p>
-
           {/* Conditional sections */}
           {activeSection === "editProfile" && (
             <EditProfile
@@ -104,17 +122,15 @@ export default function ProfileEditor({ setEdit, username,refreshData}) {
               darkMode={darkMode}
             />
           )}
-        </div>
-
         <SkillsInputComponent
            control={control}
            getValues={getValues}
            setValue={setValue}
-          handleSubmit={handleSubmit}
-          onSubmit={onSubmit}
-          darkMode={darkMode}
-        />
-        {/* Fixed Save button at the bottom */}
+           handleSubmit={handleSubmit}
+           onSubmit={onSubmit}
+           darkMode={darkMode}
+           />
+        </div>}
         <div className="sticky bottom-0 border-t px-3 h-16 bg-[#1B1F23] flex justify-end items-center">
           <button
             className={`${
@@ -987,5 +1003,28 @@ export const SkillsInputComponent = ({ control, getValues, setValue, handleSubmi
         </Button> */}
       </form>
     </div>
+  )
+}
+
+const About = ({
+  darkMode,
+  setActiveSection,
+  register,
+  handleSubmit,
+  onSubmit,}) => {
+  return(
+    <div className="space-y-2">
+              <label htmlFor="about" className="block text-sm font-medium">About</label>
+              <textarea
+                id="about"
+                {...register("about")}
+                placeholder="Write a brief description about your education..."
+                className={`w-full h-32 px-3 py-2 text-sm rounded-md border ${
+                  darkMode
+                    ? "bg-gray-800 border-gray-700 text-white"
+                    : "bg-white border-gray-300 text-gray-900"
+                } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              />
+            </div>
   )
 }
