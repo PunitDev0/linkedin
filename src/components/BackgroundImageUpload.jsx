@@ -1,14 +1,14 @@
 'use client';
-import { useState, useRef, useCallback } from 'react'
-import { useForm } from 'react-hook-form'
-import { X, Upload, FolderOpen } from 'lucide-react'
-import { Button } from "@/components/ui/bgimageui/button"
-import { useDropzone } from 'react-dropzone'
-import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
-import { ToastContainer, toast } from 'react-toastify';
+import { useState, useRef, useCallback } from 'react';
+import { useForm } from 'react-hook-form';
+import { X, Upload, FolderOpen } from 'lucide-react';
+import { Button } from "@/components/ui/bgimageui/button";
+import { useDropzone } from 'react-dropzone';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import axios from 'axios';
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
 const formSchema = z.object({
   image: z
@@ -19,86 +19,91 @@ const formSchema = z.object({
     .refine((file) => file.size <= MAX_FILE_SIZE, {
       message: `File size should be less than 5MB`,
     }),
-})
+});
 
-export function BackgroudImageEdit({setbackground}) {
-  const [previewImage, setPreviewImage] = useState(null)
-  const imageRef = useRef(null)
-  const fileInputRef = useRef(null)
+export function BackgroudImageEdit({ setbackground, username, refreshData }) {
+  const [previewImage, setPreviewImage] = useState(null);
+  const fileInputRef = useRef(null);
 
   const { register, handleSubmit, setValue, formState: { errors }, reset } = useForm({
     resolver: zodResolver(formSchema),
-  })
+  });
 
   const onSubmit = async (data) => {
     try {
-      // Here you would typically send the adjusted image to your server
-      // For this example, we'll just show a success message
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      console.log('Form submitted:', data)
-      handleDelete()
+      const formData = new FormData();
+      formData.append('image', data.image); // data.image should be a File object
+      console.log('FormData entries:', [...formData.entries()]); // Log the FormData entries
+      // // Log FormData contents
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}:`, value);
+      }
+      const response = await axios.post(`/api/background/${username}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+
+      console.log("Profile updated successfully", response.data);
+      // Optionally reset the form and preview
+      reset();
+      setPreviewImage(null);
     } catch (error) {
-      console.error('Upload failed:', error)
-      
+      console.error('Upload failed:', error);
     }
-  }
+  };
 
   const handleImageUpload = (file) => {
     if (file && file.type.startsWith('image/')) {
-      setValue('image', file, { shouldValidate: true })
-      const reader = new FileReader()
+      setValue('image', file, { shouldValidate: true });
+      const reader = new FileReader();
       reader.onload = (e) => {
-        setPreviewImage(e.target?.result)
-      }
-      reader.readAsDataURL(file)
+        setPreviewImage(e.target?.result);
+      };
+      reader.readAsDataURL(file);
     }
-  }
+  };
 
   const onDrop = useCallback((acceptedFiles) => {
-    const file = acceptedFiles[0]
+    const file = acceptedFiles[0];
     if (file) {
-      handleImageUpload(file)
+      handleImageUpload(file);
     }
-  }, [])
+  }, []);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ 
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: {'image/*': []},
-    maxSize: MAX_FILE_SIZE
-  })
+    accept: { 'image/*': [] },
+    maxSize: MAX_FILE_SIZE,
+  });
 
   const handleFileInputChange = (event) => {
-    const file = event.target.files?.[0]
+    const file = event.target.files?.[0];
     if (file) {
-      handleImageUpload(file)
+      handleImageUpload(file);
     }
-  }
+  };
 
   const handleDelete = () => {
-    setPreviewImage(null)
-    reset()
+    setPreviewImage(null);
+    reset();
     if (fileInputRef.current) {
-      fileInputRef.current.value = ''
+      fileInputRef.current.value = '';
     }
-  }
+  };
 
   const openFileFolder = () => {
-    fileInputRef.current?.click()
-  }
+    fileInputRef.current?.click();
+  };
 
   return (
-    (<div
-      className="fixed inset-0 z-10 bg-black bg-opacity-50 flex items-center justify-center p-4">
-      <div
-        className="bg-zinc-900 text-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div
-          className="flex justify-between items-center p-4 border-b border-zinc-700 sticky top-0 bg-zinc-900 z-10">
+    <div className="fixed inset-0 z-10 bg-black bg-opacity-50 flex items-center justify-center p-4">
+      <div className="bg-zinc-900 text-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="flex justify-between items-center p-4 border-b border-zinc-700 sticky top-0 bg-zinc-900 z-10">
           <h2 className="text-xl font-semibold">Background photo</h2>
-          <button className="text-zinc-400 hover:text-white">
-            <X className="w-6 h-6" onClick={()=> setbackground(false)} />
+          <button className="text-zinc-400 hover:text-white" onClick={() => setbackground(false)}>
+            <X className="w-6 h-6" />
           </button>
         </div>
-        <form onSubmit={handleSubmit(onSubmit)} className="p-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="p-4" encType="multipart/form-data">
           <div className="mb-4">
             {!previewImage ? (
               <div
@@ -118,10 +123,7 @@ export function BackgroudImageEdit({setbackground}) {
                 <img
                   src={previewImage}
                   alt="Background"
-                  style={{
-                    maxWidth: '100%',
-                    maxHeight: '60vh',
-                  }} />
+                  style={{ maxWidth: '100%', maxHeight: '60vh' }} />
               </div>
             )}
             {errors.image && (
@@ -162,6 +164,6 @@ export function BackgroudImageEdit({setbackground}) {
           accept="image/*"
           className="hidden" />
       </div>
-    </div>)
+    </div>
   );
 }

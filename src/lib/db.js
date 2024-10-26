@@ -1,8 +1,9 @@
 import mongoose from 'mongoose'
-
+const mongoURI = "mongodb://127.0.0.1:27017/linkedin"
+const mongoAtlas = "mongodb+srv://punit:punit1234@hotels.1faa9.mongodb.net/linkedin"
 export async function dbConnect(){
     try{
-        mongoose.connect('mongodb+srv://punit:punit1234@hotels.1faa9.mongodb.net/linkedin')
+        mongoose.connect("mongodb://127.0.0.1:27017/linkedin")
           
           const db = mongoose.connection
           
