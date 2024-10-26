@@ -63,10 +63,9 @@ const {} = userData;
           className="bg-white dark:bg-[#1B1F23] rounded-lg shadow-sm overflow-hidden mb-6">
           <div className="h-32 md:h-48 bg-[#1B1F23] dark:bg-[#1B1F23] relative">
             <Image
-              src=""
+              src={userData.backgroundImage}
               alt="Banner"
-              width={120}
-              height={120}
+              layout="fill" // Automatically adjusts to parent size
               className="w-full h-full object-cover" />
             <button
               className="absolute top-2 right-2 p-2 bg-white dark:bg-[#1B1F23] rounded-full shadow-md">
