@@ -8,7 +8,9 @@ import { Label } from "@/components/ui/;ogin2/label"
 import { Switch } from "@/components/ui/;ogin2/switch"
 import { Facebook, Twitter, Github, Moon, Sun,Linkedin } from 'lucide-react'
 import { signIn } from 'next-auth/react'
+import { useRouter, redirect } from 'next/navigation';
 import { useForm } from 'react-hook-form'
+import axios from 'axios'
 export default function LandingPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [isDarkMode, setIsDarkMode] = useState(false)
@@ -21,29 +23,27 @@ export default function LandingPage() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    setErrorMessage('');
     console.log(data);
     try {
       if (isSignUp) {
-        // Handle credentials-based login
-        try {
-          await signIn("credentials", {
-            redirect: true,
-            email: data.email,
-            password: data.password,
-            callbackUrl: '/feed', // Redirect to /feed after successful login
-          });
-        } catch (error) {
-          return error.message;
-        }
-      } else {
         // Handle registration process
         const response = await axios.post('/api/register', data);
-        setIsSignUp(true);
-        setSuccessMessage(response.data.message);
+        console.log('Registration successful', response.data);
+        setIsSignUp(false); // Optionally switch to login mode after successful registration
+      } else {
+        // Handle credentials-based login
+        const result = await signIn("credentials", {
+          redirect: true,
+          email: data.email,
+          password: data.password,
+          callbackUrl: '/feed', // Redirect to /feed after successful login
+        });
+        if (result.error) {
+          console.error(result.error); // Log the error if sign-in fails
+        }
       }
     } catch (error) {
-      setErrorMessage("An error occurred during authentication: " + error.message);
+      console.error('An error occurred:', error);
     }
   };
   
