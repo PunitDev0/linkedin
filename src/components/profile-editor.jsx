@@ -7,7 +7,6 @@ import { useForm, Controller } from "react-hook-form";
 import { useDarkMode } from "@/app/context/Context";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import Spinner from "./spinner";
 export default function ProfileEditor({ setEdit, username,refreshData,setAbout,about}) {
   const [loading, setLoading] = useState(false);
   console.log(username);
@@ -21,7 +20,7 @@ export default function ProfileEditor({ setEdit, username,refreshData,setAbout,a
   const [activeSection, setActiveSection] = useState("editProfile");
 
   const onSubmit = async (data) => {
-    console.log(data);
+    console.log(data); 
     console.log('Submitted skills:', data.skills);
     setLoading(true)
     try {
@@ -80,6 +79,14 @@ export default function ProfileEditor({ setEdit, username,refreshData,setAbout,a
               onSubmit={onSubmit}
               darkMode={darkMode}
             />
+             <SkillsInputComponent
+           control={control}
+           getValues={getValues}
+           setValue={setValue}
+           handleSubmit={handleSubmit}
+           onSubmit={onSubmit}
+           darkMode={darkMode}
+           />
            </div>
           ) : <div className="overflow-x-auto px-4 py-6">
           <p
@@ -183,7 +190,7 @@ export const EditProfile = ({
               </label>
               <input
                 type="text"
-                id="firstName"
+                id="firstname"
                 {...register("firstname")}
                 className={`w-full ${
                   darkMode
@@ -202,7 +209,7 @@ export const EditProfile = ({
               </label>
               <input
                 type="text"
-                id="lastName"
+                id="lastname"
                 {...register("lastname")}
                 className={`w-full ${
                   darkMode
@@ -1013,8 +1020,8 @@ const About = ({
   handleSubmit,
   onSubmit,}) => {
   return(
-    <div className="space-y-2">
-              <label htmlFor="about" className="block text-sm font-medium">About</label>
+    <div className="p-6">
+               <h2 className="text-xl font-semibold mb-1">About</h2>
               <textarea
                 id="about"
                 {...register("about")}

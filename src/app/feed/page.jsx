@@ -150,8 +150,8 @@ export default  function Feed() {
               <CardContent className="p-4">
                 <div className="flex items-center space-x-4">
                   <Avatar>
-                    <AvatarImage src="/placeholder-user.jpg" alt="User" />
-                    <AvatarFallback>UN</AvatarFallback>
+                    <AvatarImage src={userData.image} alt="User" />
+                    <AvatarFallback>PN</AvatarFallback>
                   </Avatar>
                   <Input placeholder="Start a post" className="bg-gray-100 border-gray-500 dark:bg-[#1B1F23]" />
                 </div>
