@@ -175,7 +175,7 @@ const {} = userData;
               className="bg-white dark:bg-[#1B1F23] rounded-lg shadow-sm p-4 md:p-6 mb-6">
               <h2 className="text-xl font-semibold mb-4 flex justify-between items-center">
                 Experience
-                <Plus className="text-gray-400 dark:text-gray-500 cursor-pointer" size={20} />
+                <Plus className="text-gray-400 dark:text-gray-500 cursor-pointer" onClick={()=> redirect('/details/experience')} size={20} />
               </h2>
               <div className="space-y-6">
                 <div className="flex">

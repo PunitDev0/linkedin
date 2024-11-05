@@ -5,8 +5,8 @@ import { X, Info, Plus, Moon, Sun, Upload, RotateCw, Crop, GripVertical } from "
 import axios from "axios";
 import { useForm, Controller } from "react-hook-form";
 import { useDarkMode } from "@/app/context/Context";
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/profileui/button"
+import { Input } from "@/components/ui/profileui/input"
 export default function ProfileEditor({ setEdit, username,refreshData,setAbout,about}) {
   const [loading, setLoading] = useState(false);
   console.log(username);
