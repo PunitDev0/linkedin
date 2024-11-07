@@ -1,5 +1,5 @@
 "use client";
-
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { X, Info, Plus, Moon, Sun, Upload, RotateCw, Crop, GripVertical } from "lucide-react";
 import axios from "axios";
