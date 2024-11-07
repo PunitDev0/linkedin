@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { ChevronLeft, Edit, MessageCircle, Plus } from "lucide-react"
 import Image from "next/image"
-
+import { useRouter } from "next/router"
 export default function ExperiencePage() {
   const [isDarkMode, setIsDarkMode] = useState(false)
 

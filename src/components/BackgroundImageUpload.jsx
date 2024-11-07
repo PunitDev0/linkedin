@@ -105,7 +105,8 @@ export function BackgroudImageEdit({ setbackground, username, refreshData }) {
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="p-4" encType="multipart/form-data">
           <div className="mb-4">
-            {!previewImage ? (
+            {!previewImage ? (+
+            
               <div
                 {...getRootProps()}
                 className="p-8 border-2 border-dashed border-zinc-700 rounded-lg text-center cursor-pointer hover:border-zinc-500 transition-colors">
