@@ -16,7 +16,9 @@ export default function RootLayout({ children }) {
         <SessionProvider>
         <DarkModeProvider>
         {!isLoginPage && !isLoginPage2 &&  <NavbarComponent />}
+        <div className="pt-10">
         {children}
+        </div>
         </DarkModeProvider>
         </SessionProvider>
       </body>

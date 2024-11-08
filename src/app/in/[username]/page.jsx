@@ -9,11 +9,13 @@ import Image from 'next/image';
 import ProfileEditor from '@/components/profile-editor';
 import { BackgroudImageEdit } from '@/components/BackgroundImageUpload';
 import { ProfilePhotoEditor } from '@/components/photo-editor';
+import { ConnectButton } from '@/components/connection-buttons';
 export default function ProfilePage({params}) {
   const [background, setbackground] = useState(false)
   const [message, setMessage] = useState("");
   const [ProfileImage, setProfileImage] = useState(false);
   const [about, setAbout] = useState(false)
+ 
   const router = useRouter();
   const currentPath = router.pathname;
   const handleRedirect = (path) => {
@@ -236,27 +238,7 @@ const {} = userData;
                     <h3 className="font-semibold">Full Stack Developer</h3>
                     <p className="text-sm text-gray-600 dark:text-gray-400">TechCorp Solutions</p>
                     <p className="text-xs text-gray-500 dark:text-gray-500">Jan 2022 - Present · 1 yr 6 mos</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-500">New Delhi, India</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                      Developed and maintained web applications using React, Node.js, and MongoDB.
-                      Implemented RESTful APIs and improved application performance by 30%.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex">
-                  <img
-                    src="/placeholder.svg?height=48&width=48"
-                    alt="Company Logo"
-                    className="w-12 h-12 rounded" />
-                  <div className="ml-4">
-                    <h3 className="font-semibold">Frontend Developer</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">WebDesign Pro</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-500">Jun 2020 - Dec 2021 · 1 yr 7 mos</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-500">Gurgaon, India</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                      Created responsive and interactive user interfaces using HTML, CSS, and JavaScript.
-                      Collaborated with UX designers to implement pixel-perfect designs.
-                    </p>
+                   
                   </div>
                 </div>
               </div>
@@ -383,6 +365,7 @@ const {} = userData;
                     <div>
                       <p className="font-semibold">{name}</p>
                       <p className="text-xs text-gray-600 dark:text-gray-400">Full Stack Developer</p>
+                      <ConnectButton/>
                       <button
                         className="mt-1 border border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 px-3 py-1 rounded-full text-xs hover:bg-blue-50 dark:hover:bg-blue-900 transition-colors duration-200">
                         Connect

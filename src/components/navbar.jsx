@@ -23,7 +23,7 @@ export default function NavbarComponent() {
 
   return (
     (<nav
-      className="bg-white dark:bg-[#1B1F23] w-full shadow-md border-t border-b border-gray-700 transition-colors duration-200">
+      className="bg-white dark:bg-[#1B1F23] fixed z-10 w-full  shadow-md border-t border-b border-gray-700 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center  justify-between h-14">
           <div className="flex items-center">

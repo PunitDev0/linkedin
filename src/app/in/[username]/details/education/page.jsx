@@ -23,7 +23,7 @@ export default function ExperiencePage() {
   return (
     (<div
       className={`min-h-screen py-5 ${isDarkMode ? 'dark bg-black text-white' : 'bg-white text-black'}`}>
-      <div className="max-w-6xl mx-auto p-4 space-y-6">
+      <div className="max-w-6xl mx-auto p-4 px-8 space-y-6">
         {/* Main Content */}
         <div className="grid md:grid-cols-3 gap-6">
           <div className="md:col-span-2">
@@ -51,16 +51,7 @@ export default function ExperiencePage() {
                     </div>
                     <p className="text-sm">Arth institute of commerce & vocational studies - Internship</p>
                     <p className="text-sm text-muted-foreground">Jan 2024 - Sep 2024 · 9 mos</p>
-                    <p className="text-sm text-muted-foreground">India · On-site</p>
-                    <p className="mt-2 text-sm">
-                      As an IT Trainer at the Art Institute, I delivered training on web development, programming, and IT
-                      infrastructure, focusing on both theoretical and hands-on learning. I guided students through real-world
-                      projects, tailored lessons to different learning styles, and collaborated on an up-to-date curriculum to help
-                      them develop essential tech skills for their careers.
-                    </p>
-                    <p className="mt-2 text-sm">
-                      <span className="font-semibold">Skills:</span> JavaScript · HTML/CSS · React.js · PHP · MySQL
-                    </p>
+                   
                   </div>
                 </div>
               </CardContent>
@@ -69,7 +60,7 @@ export default function ExperiencePage() {
 
           {/* Sidebar */}
           <div>
-            <Card className={`${isDarkMode ? 'bg-[#1B1F23] border-gray-700' : ''}`}>
+            <Card className={`${isDarkMode ? 'bg-[#1B1F23] border-gray-700' : ''} `}>
               <CardHeader>
                 <CardTitle className="text-base">
                   <span
