@@ -17,10 +17,9 @@ export default function ProfilePage({params}) {
   const [about, setAbout] = useState(false)
  
   const router = useRouter();
-  const currentPath = router.pathname;
   const handleRedirect = (path) => {
     router.push(path);
-  };
+  }; 
     const { username } = params;
     // console.log(username);
     const [userData, setUserData] = useState([])
@@ -170,12 +169,7 @@ const {} = userData;
                   setEdit(!edit);
                 }} />
               </h2>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Passionate Front-End & Back-End Specialist with expertise in HTML, CSS, React, Tailwind CSS, PHP, MySQL, and MongoDB. 
-                I excel at transforming ideas into engaging, responsive web solutions. With a strong foundation in both design and 
-                development, I create seamless user experiences that are visually appealing and functionally robust. Dedicated to 
-                continuous learning and staying at the forefront of web technologies to deliver innovative and impactful projects.
-              </p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">{userData.about}</p>
             </div>
 
             <div
