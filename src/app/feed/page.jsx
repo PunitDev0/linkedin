@@ -109,7 +109,7 @@ export default  function Feed() {
   // }
 
   return (
-    (<div className={`min-h-screen ${darkMode ? 'dark' : ''}`}>
+    (<div className={`min-h-screen ${darkMode ? 'dark' : ''} py-5`}>
       <div className="bg-[#F4F2EE] dark:bg-black text-gray-900 dark:text-white p-4">
 
           {openPost && <LinkedInPost onTrigger={triggerFunction} setopenPost={setopenPost} />}

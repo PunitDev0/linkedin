@@ -8,26 +8,19 @@ import { ChevronLeft, Edit, MessageCircle, Plus } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { ConnectButton } from "@/components/connection-buttons"
+import { useDarkMode } from "@/app/context/Context"
 export default function ExperiencePage() {
-  const [isDarkMode, setIsDarkMode] = useState(false)
 
-  useEffect(() => {
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-    setIsDarkMode(prefersDark)
-  }, [])
-
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode)
-  }
+   const { darkMode, toggleDarkMode } = useDarkMode();
 
   return (
     (<div
-      className={`min-h-screen py-5 ${isDarkMode ? 'dark bg-black text-white' : 'bg-white text-black'}`}>
+      className={`min-h-screen py-5 ${darkMode ? 'dark bg-black text-white' : 'bg-white text-black'}`}>
       <div className="max-w-6xl mx-auto p-4 space-y-6">
         {/* Main Content */}
         <div className="grid md:grid-cols-3 gap-6">
           <div className="md:col-span-2">
-            <Card className={`${isDarkMode ? 'bg-[#1B1F23] border-gray-700' : ''}`}>
+            <Card className={`${darkMode ? 'bg-[#1B1F23] border-gray-700' : ''}`}>
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>Experience</CardTitle>
                 <Button variant="ghost" size="icon">
@@ -69,7 +62,7 @@ export default function ExperiencePage() {
 
           {/* Sidebar */}
           <div>
-            <Card className={`${isDarkMode ? 'bg-[#1B1F23] border-gray-700' : ''}`}>
+            <Card className={`${darkMode ? 'bg-[#1B1F23] border-gray-700' : ''}`}>
               <CardHeader>
                 <CardTitle className="text-base">
                   <span

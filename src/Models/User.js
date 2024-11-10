@@ -67,12 +67,48 @@ const UserSchema = new mongoose.Schema({
   skills: [{
     type: String,
   }],
+  
   experience: [{
-    title: String,
-    company: String,
-    startDate: Date,
-    endDate: Date,
-    description: String,
+    title: {
+      type: String,
+      required: [true, 'Title is required'],
+    },
+    companyName: {
+      type: String,
+      required: [true, 'Company name is required'],
+    },
+    startDate: {
+      type: Date,
+      required: [true, 'Start date is required'],
+    },
+    endDate: {
+      type: Date,
+      required: function() {
+        return !this.isCurrentlyWorking; // If not currently working, endDate is required
+      },
+    },
+    isCurrentlyWorking: {
+      type: Boolean,
+      default: false,
+    },
+    location: {
+      type: String,
+      default: '', // Optional location field
+    },
+    locationType: {
+      type: String,
+      enum: ['on-site', 'remote', 'hybrid'],
+      required: [true, 'Location type is required'],
+    },
+    employmentType: {
+      type: String,
+      enum: ['full-time', 'part-time', 'self-employed', 'freelance', 'contract', 'internship', 'apprenticeship', 'seasonal'],
+      required: [true, 'Employment type is required'],
+    },
+    description: {
+      type: String,
+      default: '', // Optional description field
+    },
   }],
   about: { type: String },
   headline: { type: String },
