@@ -80,6 +80,7 @@ export function LoginPage() {
                 Continue with Google
               </button>
               <button
+               onClick={() => setLogin(true)}
                 className="w-full border-2 rounded-full py-3 px-4 text-gray-700 hover:bg-gray-50 transition-colors">
                 Sign in with email
               </button>
