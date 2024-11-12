@@ -18,20 +18,20 @@ import { Education } from "./ProfileEditOption/Education";
 
 export default function ProfileEditor({ setEdit, username,refreshData,setAbout,about}) {
   const [loading, setLoading] = useState(false);
+  const [activeSection, setActiveSection] = useState("editProfile");
   console.log(username);
-  const { register, handleSubmit, control, setValue, getValues } = useForm({
+  const { register, handleSubmit, control, setValue, getValues, formState: { errors }, watch} = useForm({
     defaultValues: {
       skills: ['skills', 'react'],
-      newSkill: ''
+      newSkill: '',
     }
+  
   });
   const { darkMode } = useDarkMode();
-  const [activeSection, setActiveSection] = useState("editProfile");
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data) => {  
     console.log(data); 
-    console.log('Submitted skills:', data.skills);
-    console.log('Submitted skills:', data.experience);
+        
     setLoading(true)
     try {
       const response = await axios.post(`/api/user/${username}`, data); // Send the rest of the form data
@@ -121,13 +121,16 @@ export default function ProfileEditor({ setEdit, username,refreshData,setAbout,a
                   setActiveSection={setActiveSection}
                 />
               )}
-              {activeSection === "position" && (
-                <Experience
-                  register={register}
-                  handleSubmit={handleSubmit}
-                  onSubmit={onSubmit}
-                />
-              )}
+                {activeSection === "position" && (
+                 <Experience
+                 darkMode={false}
+                 register={register}
+                 handleSubmit={handleSubmit}
+                 onSubmit={onSubmit}
+                 errors={errors}
+                 watch={watch} // Pass watch to child component if needed
+               />
+                )}
               {activeSection === "phone" && (
                 <Phone
                   register={register}
@@ -156,20 +159,20 @@ export default function ProfileEditor({ setEdit, username,refreshData,setAbout,a
           )
         )}
 
-        <div className="sticky bottom-0 border-t px-3 h-16 bg-[#1B1F23] flex justify-end items-center">
-          <button
-            className={`${
-              darkMode
-                ? "text-gray-200 bg-green-600 hover:bg-green-700"
-                : "text-gray-800 bg-green-500 hover:bg-green-600"
-            } px-4 py-2 rounded-lg`}
-            onClick={handleSubmit(onSubmit)}
-            type="submit"
-          >
-            Save
-          </button>
+          <div className="sticky bottom-0 border-t px-3 h-16 bg-[#1B1F23] flex justify-end items-center">
+            <button
+              className={`${
+                darkMode
+                  ? "text-gray-200 bg-green-600 hover:bg-green-700"
+                  : "text-gray-800 bg-green-500 hover:bg-green-600"
+              } px-4 py-2 rounded-lg`}
+              onClick={handleSubmit(onSubmit)}
+              type="submit"
+            >
+              Save
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
   }
