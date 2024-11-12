@@ -1,8 +1,10 @@
-  import LinkedinAuth from "@/Frontend/linkedin-auth";
-  import Image from "next/image";
-import { redirect } from "next/navigation";
- 
+import { LoginPage } from '@/components/login-page'
+import React from 'react'
 
-  export default function Home() {
-    redirect('/login2');
-  }
+const page = () => {
+  return (
+   <><LoginPage/></>
+  )
+}
+
+export default page

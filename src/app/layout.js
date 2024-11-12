@@ -9,14 +9,15 @@ export default function RootLayout({ children }) {
   const pathname = usePathname();
   const isLoginPage = pathname === '/login';
   const isLoginPage2 = pathname === '/login2';
+  const Firstpage = pathname === '/';
 
   return (
     <html lang="en">
       <body className="antialiased">
         <SessionProvider>
         <DarkModeProvider>
-        {!isLoginPage && !isLoginPage2 &&  <NavbarComponent />}
-        <div className="pt-10">
+        {!isLoginPage && !isLoginPage2 && ! Firstpage &&  <NavbarComponent />}
+        <div className="">
         {children}
         </div>
         </DarkModeProvider>
