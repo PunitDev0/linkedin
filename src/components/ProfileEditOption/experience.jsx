@@ -1,8 +1,13 @@
-import { useForm } from "react-hook-form";
-
-export const Experience = ({ darkMode, register, handleSubmit, onSubmit }) => {
-    const { watch } = useForm();
-    const isCurrentlyWorking = watch("isCurrentlyWorking");
+  export const Experience = ({ 
+    darkMode,
+    register, 
+    handleSubmit,
+    onSubmit,
+    watch
+  }) => {
+    const isCurrentlyWorking = watch("experience.isCurrentlyWorking");
+    console.log(isCurrentlyWorking);
+    
     return (
       <>
         <form onSubmit={handleSubmit(onSubmit)} className="px-6 pb-24">
@@ -12,7 +17,7 @@ export const Experience = ({ darkMode, register, handleSubmit, onSubmit }) => {
                 Title*
               </label>
               <input
-                {...register("title")}
+                {...register("experience.title", { required: "Title is required" })}
                 type="text"
                 id="title"
                 className={`w-full ${
@@ -22,16 +27,13 @@ export const Experience = ({ darkMode, register, handleSubmit, onSubmit }) => {
                 } border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
               />
             </div>
-  
+
             <div>
-              <label
-                htmlFor="employmentType"
-                className="block text-sm font-medium mb-1"
-              >
-                Employment type
+              <label htmlFor="employmentType" className="block text-sm font-medium mb-1">
+                Employment Type*
               </label>
               <select
-                {...register("employmentType")}
+                {...register("experience.employmentType", { required: "Employment type is required" })}
                 id="employmentType"
                 className={`w-full ${
                   darkMode
@@ -50,16 +52,13 @@ export const Experience = ({ darkMode, register, handleSubmit, onSubmit }) => {
                 <option value="seasonal">Seasonal</option>
               </select>
             </div>
-  
+
             <div>
-              <label
-                htmlFor="companyName"
-                className="block text-sm font-medium mb-1"
-              >
-                Company name*
+              <label htmlFor="companyName" className="block text-sm font-medium mb-1">
+                Company Name*
               </label>
               <input
-                {...register("companyName")}
+                {...register("experience.companyName", { required: "Company name is required" })}
                 type="text"
                 id="companyName"
                 className={`w-full ${
@@ -69,17 +68,14 @@ export const Experience = ({ darkMode, register, handleSubmit, onSubmit }) => {
                 } border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
               />
             </div>
-  
+
             <div className="flex space-x-4">
               <div className="flex-1">
-                <label
-                  htmlFor="startDate"
-                  className="block text-sm font-medium mb-1"
-                >
-                  Start date*
+                <label htmlFor="startDate" className="block text-sm font-medium mb-1">
+                  Start Date*
                 </label>
                 <input
-                  {...register("startDate")}
+                  {...register("experience.startDate", { required: "Start date is required" })}
                   type="date"
                   id="startDate"
                   className={`w-full ${
@@ -89,16 +85,16 @@ export const Experience = ({ darkMode, register, handleSubmit, onSubmit }) => {
                   } border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
                 />
               </div>
+
               {!isCurrentlyWorking && (
                 <div className="flex-1">
-                  <label
-                    htmlFor="endDate"
-                    className="block text-sm font-medium mb-1"
-                  >
-                    End date
+                  <label htmlFor="endDate" className="block text-sm font-medium mb-1">
+                    End Date
                   </label>
                   <input
-                    {...register("endDate")}
+                    {...register("experience.endDate", {
+                      required: !isCurrentlyWorking && "End date is required if not currently working",
+                    })}
                     type="date"
                     id="endDate"
                     className={`w-full ${
@@ -110,10 +106,10 @@ export const Experience = ({ darkMode, register, handleSubmit, onSubmit }) => {
                 </div>
               )}
             </div>
-  
+
             <div className="flex items-center">
               <input
-                {...register("isCurrentlyWorking")}
+                {...register("experience.isCurrentlyWorking")}
                 type="checkbox"
                 id="isCurrentlyWorking"
                 className="mr-2"
@@ -122,16 +118,13 @@ export const Experience = ({ darkMode, register, handleSubmit, onSubmit }) => {
                 I am currently working in this role
               </label>
             </div>
-  
+
             <div>
-              <label
-                htmlFor="location"
-                className="block text-sm font-medium mb-1"
-              >
+              <label htmlFor="location" className="block text-sm font-medium mb-1">
                 Location
               </label>
               <input
-                {...register("location")}
+                {...register("experience.location")}
                 type="text"
                 id="location"
                 className={`w-full ${
@@ -141,16 +134,13 @@ export const Experience = ({ darkMode, register, handleSubmit, onSubmit }) => {
                 } border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
               />
             </div>
-  
+
             <div>
-              <label
-                htmlFor="locationType"
-                className="block text-sm font-medium mb-1"
-              >
-                Location type
+              <label htmlFor="locationType" className="block text-sm font-medium mb-1">
+                Location Type*
               </label>
               <select
-                {...register("locationType")}
+                {...register("experience.locationType", { required: "Location type is required" })}
                 id="locationType"
                 className={`w-full ${
                   darkMode
@@ -164,16 +154,13 @@ export const Experience = ({ darkMode, register, handleSubmit, onSubmit }) => {
                 <option value="hybrid">Hybrid</option>
               </select>
             </div>
-  
+
             <div>
-              <label
-                htmlFor="description"
-                className="block text-sm font-medium mb-1"
-              >
+              <label htmlFor="description" className="block text-sm font-medium mb-1">
                 Description
               </label>
               <textarea
-                {...register("description")}
+                {...register("experience.description")}
                 id="description"
                 rows={4}
                 className={`w-full ${
@@ -188,4 +175,3 @@ export const Experience = ({ darkMode, register, handleSubmit, onSubmit }) => {
       </>
     );
   };
-  

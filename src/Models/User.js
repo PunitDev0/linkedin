@@ -114,12 +114,15 @@ const UserSchema = new mongoose.Schema({
   headline: { type: String },
   industry: { type: String },
   currentPosition: {type: String },
+
   education: [{
     school: String,
     degree: String,
-    fieldOfStudy: String,
-    startDate: Date,
-    endDate: Date,
+    field_of_study: String,
+    startMonth: Date,
+    startYear: Date,
+    endhMonth: Date,
+    endYear: Date,
   }],
   contact:[{
     phone: Number,
