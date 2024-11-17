@@ -62,7 +62,7 @@ export default function ExperiencePage() {
 
           {/* Sidebar */}
           <div>
-            <Card className={`${darkMode ? 'bg-[#1B1F23] border-gray-700' : ''}`}>
+            <Card className={`dark:bg-[#1B1F23] dark:border-gray-700'`}>
               <CardHeader>
                 <CardTitle className="text-base">
                   <span
