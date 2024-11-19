@@ -1,17 +1,15 @@
 'use client'
 
-import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/experience/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/experience/card"
 import { Separator } from "@/components/ui/experience/separator"
-import { ChevronLeft, Edit, MessageCircle, Plus } from "lucide-react"
+import { Edit, Plus } from "lucide-react"
 import Image from "next/image"
-import { useRouter } from "next/router"
 import { ConnectButton } from "@/components/connection-buttons"
 import { useDarkMode } from "@/app/context/Context"
 export default function ExperiencePage() {
 
-   const { darkMode, toggleDarkMode } = useDarkMode();
+   const { darkMode } = useDarkMode();
 
   return (
     (<div

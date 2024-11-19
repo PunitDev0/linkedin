@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from "@/components/ui/Login2/button"
 import { Input } from "@/components/ui/Login2/input"
 import { Label } from "@/components/ui/Login2/label"
-import { Switch } from "@/components/ui/Login2/switch"
 import { Facebook, Twitter, Github, Moon, Sun,Linkedin } from 'lucide-react'
 import { signIn } from 'next-auth/react'
 import { useRouter, redirect } from 'next/navigation';

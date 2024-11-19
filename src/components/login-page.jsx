@@ -3,14 +3,18 @@
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-
+import { signIn } from "next-auth/react";
 import { useState } from "react"
 import Login from "./Login2"
 
 export function LoginPage() {
   const [isLogin, setLogin] = useState(false)
+   
+  // Handle provider-based sign-in (e.g., GitHub, Google)
+  const handleProviderSignIn = (provider) => {
+    // Use NextAuth to sign in with OAuth providers
+    signIn(provider, { callbackUrl: '/feed' }); // Redirect to /feed after successful login
+  };
   return (
     (<div className="min-h-screen bg-white">
       <header className="border-b">
@@ -73,6 +77,7 @@ export function LoginPage() {
             </h1>
             <div className="space-y-4 max-w-md">
               <button
+              onClick={()=> handleProviderSignIn('github')}
                 className="w-full flex items-center justify-center gap-2 bg-[#1a73e8] text-white rounded-full py-3 px-4 hover:bg-[#1557b0] transition-colors">
                 <Image
                   src="/assets/Google.png"
