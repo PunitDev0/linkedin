@@ -3,6 +3,9 @@
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+
 import { useState } from "react"
 import Login from "./Login2"
 
@@ -72,11 +75,12 @@ export function LoginPage() {
               <button
                 className="w-full flex items-center justify-center gap-2 bg-[#1a73e8] text-white rounded-full py-3 px-4 hover:bg-[#1557b0] transition-colors">
                 <Image
-                  src=""
+                  src="/assets/Google.png"
                   alt="Google"
                   width={20}
                   height={20}
-                  className="w-5 h-5" />
+                  className="w-5 h-5 shadow-lg" />
+                  
                 Continue with Google
               </button>
               <button
