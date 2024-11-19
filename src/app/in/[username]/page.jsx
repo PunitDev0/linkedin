@@ -58,7 +58,7 @@ const {} = userData;
 
   return (
     (<div
-      className="bg-gray-100 dark:bg-black min-h-screen text-gray-900 dark:text-gray-100 transition-colors duration-200">
+      className="bg-gray-100 dark:bg-black min-h-screen text-gray-900 dark:text-gray-100 transition-colors duration-200 pt-10">
         {ProfileImage && <ProfilePhotoEditor setProfileImage={setProfileImage} 
         ProfileImage={ProfileImage}/>}
         {background && <BackgroudImageEdit setbackground={setbackground} username={username} refreshData={refreshData}/>}
