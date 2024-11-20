@@ -5,8 +5,6 @@ import { X, Info, Plus, Moon, Sun, Upload, RotateCw, Crop, GripVertical } from "
 import axios from "axios";
 import { useForm, Controller } from "react-hook-form";
 import { useDarkMode } from "@/app/context/Context";
-import { Button } from "@/components/ui/profileui/button"
-import { Input } from "@/components/ui/profileui/input"
 import { LinkedLoader } from "./linkedin-loader";
 import { Experience } from "./ProfileEditOption/experience";
 import { EditProfile } from "./ProfileEditOption/EditProfile";
@@ -14,9 +12,10 @@ import { SkillsInputComponent } from "./ProfileEditOption/Skills";
 import { About } from "./ProfileEditOption/About";
 import { Phone } from "./ProfileEditOption/Phone";
 import { Education } from "./ProfileEditOption/Education";
+import useFetchUserData from "@/app/Hooks/UserFetchData";
 // This component is a modal that allows users to edit their profile
 
-export default function ProfileEditor({ setEdit, username,refreshData,setAbout,about}) {
+export default function ProfileEditor({ setEdit, username, refreshData, setAbout, about}) {
   const [loading, setLoading] = useState(false);
   const [activeSection, setActiveSection] = useState("editProfile");
   console.log(username);

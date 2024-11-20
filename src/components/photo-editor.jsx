@@ -5,12 +5,18 @@ import { X, Edit3, Camera, Image as ImageIcon, Trash2 } from 'lucide-react'
 import { Button } from "@/components/ui/profileimage-ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/profileimage-ui/select"
 import { useTheme } from 'next-themes'
+import useFetchUserData from '@/app/Hooks/UserFetchData';
+export function ProfilePhotoEditor({setProfileImage,username, ProfileImage}) {
+  const {userData, fetchUserData} = useFetchUserData();
+  useEffect(()=>{
+    fetchUserData(username);
+  },[username])
 
-export function ProfilePhotoEditor({setProfileImage, ProfileImage}) {
-  const [previewImage, setPreviewImage] = useState('/placeholder.svg?height=400&width=400')
+  const [previewImage, setPreviewImage] = useState(userData.image)
+  console.log(userData.image);
+  
   const fileInputRef = useRef(null)
   const { setTheme } = useTheme()
-
   const { control, handleSubmit } = useForm({
     defaultValues: {
       visibility: 'anyone'
@@ -69,7 +75,7 @@ export function ProfilePhotoEditor({setProfileImage, ProfileImage}) {
             <div className="flex justify-center">
               <div className="relative bg-slate-400">
                 <img
-                  src={previewImage || '/placeholder.svg?height=400&width=400'}
+                  src={previewImage}
                   alt="Profile"
                   className="rounded-full w-80 h-80 object-cover" />
                 <Controller

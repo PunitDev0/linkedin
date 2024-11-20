@@ -10,35 +10,27 @@ import ProfileEditor from '@/components/profile-editor';
 import { BackgroudImageEdit } from '@/components/BackgroundImageUpload';
 import { ProfilePhotoEditor } from '@/components/photo-editor';
 import { ConnectButton } from '@/components/connection-buttons';
+import useFetchUserData from '@/app/Hooks/UserFetchData';
 export default function ProfilePage({params}) {
+  const { username } = params;
   const [background, setbackground] = useState(false)
-  const [message, setMessage] = useState("");
+  // const [message, setMessage] = useState("");
   const [ProfileImage, setProfileImage] = useState(false);
   const [about, setAbout] = useState(false)
- 
+  const { userData, message, error, loading, fetchUserData } = useFetchUserData();
+  console.log(userData);
+  
+  useEffect(()=>{
+    fetchUserData(username)
+  },[username])
   const router = useRouter();
   const handleRedirect = (path) => {
     router.push(path);
-  }; 
-    const { username } = params;
-    // console.log(username);
-    const [userData, setUserData] = useState([])
-    
+  };     
     const { darkMode } = useDarkMode();
     const [edit, setEdit] = useState(false)
 
-      const fetchUserData = async () => {
-        try {
-          const response = await axios.get(`/api/user/${username}`);
-          setUserData(response.data);
-          setMessage(response.data.message)
-          console.log(response);
-          ;
-        } catch (err) {
-          console.log(err);
-          
-        } 
-      };
+      
     useEffect(() => {
       if (username) {
         // Save the username to localStorage
@@ -53,14 +45,15 @@ export default function ProfilePage({params}) {
   };
 
     console.log(userData);
-const {} = userData;
 
 
   return (
     (<div
       className="bg-gray-100 dark:bg-black min-h-screen text-gray-900 dark:text-gray-100 transition-colors duration-200 pt-10">
-        {ProfileImage && <ProfilePhotoEditor setProfileImage={setProfileImage} 
+
+        {ProfileImage && <ProfilePhotoEditor  username={username} setProfileImage={setProfileImage} 
         ProfileImage={ProfileImage}/>}
+
         {background && <BackgroudImageEdit setbackground={setbackground} username={username} refreshData={refreshData}/>}
         {edit && <ProfileEditor about={about} setAbout={setAbout} setEdit={setEdit} username={username} refreshData={refreshData}/>}
 

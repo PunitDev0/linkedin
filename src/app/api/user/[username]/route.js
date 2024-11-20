@@ -45,6 +45,10 @@
         // Ensure user.experience is initialized as an array if it doesn't exist
         user.experience = [...(user.experience || []), profileData.experience];
       }
+      if (profileData.education) {
+        // Ensure user.experience is initialized as an array if it doesn't exist
+        user.education = [...(user.education || []), profileData.education];
+      }
   
       // Check if there is any data to update (to prevent unnecessary updates)
       if (Object.keys(profileData).length === 0) {
@@ -54,7 +58,10 @@
       // Update the user with the fields provided in the request
       const updatedUser = await User.findOneAndUpdate(
         { username },               // Find user by username
-        { ...profileData, experience: user.experience },  // Update the fields in profileData
+        { ...profileData,
+           experience: user.experience,
+           education: user.education
+          },  // Update the fields in profileData
         { new: true }                   // Return the updated document
       );
   

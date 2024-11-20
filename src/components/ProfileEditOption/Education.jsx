@@ -1,5 +1,5 @@
 export const Education = ({ darkMode, register, handleSubmit, onSubmit }) => {
-    const currentYear = new Date().getFullYear();
+    const currentYear = new Date().getFullYear()+10;
     const years = Array.from({ length: 100 }, (_, i) => currentYear - i);
     const months = [
       "January",
@@ -33,12 +33,12 @@ export const Education = ({ darkMode, register, handleSubmit, onSubmit }) => {
               School
             </label>
             <input
-              {...register("school")}
+              {...register("education.school")}
               type="tel"
               id="phone"
               className={`w-full ${
                 darkMode
-                  ? "bg-gray-800 border-gray-700"
+                  ? "bg-[#0D0F11] border-gray-700"
                   : "bg-white border-gray-300"
               } border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
             />
@@ -49,12 +49,12 @@ export const Education = ({ darkMode, register, handleSubmit, onSubmit }) => {
               Degree
             </label>
             <input
-              {...register("degree")}
+              {...register("education.degree")}
               type="tel"
               id="phone"
               className={`w-full ${
                 darkMode
-                  ? "bg-gray-800 border-gray-700"
+                  ? "bg-[#0D0F11] border-gray-700"
                   : "bg-white border-gray-300"
               } border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
             />
@@ -65,12 +65,12 @@ export const Education = ({ darkMode, register, handleSubmit, onSubmit }) => {
               Fiend Of Study
             </label>
             <input
-              {...register("field_of_study")}
+              {...register("education.field_of_study")}
               type="tel"
               id="phone"
               className={`w-full ${
                 darkMode
-                  ? "bg-gray-800 border-gray-700"
+                  ? "bg-[#0D0F11] border-gray-700"
                   : "bg-white border-gray-300"
               } border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
             />
@@ -81,10 +81,10 @@ export const Education = ({ darkMode, register, handleSubmit, onSubmit }) => {
             <div className="flex space-x-4">
               <div className="flex-1">
                 <select
-                  {...register("startMonth")}
+                  {...register("education.startMonth")}
                   className={`w-full ${
                     darkMode
-                      ? "bg-gray-800 border-gray-700"
+                      ? "bg-[#0D0F11] border-gray-700"
                       : "bg-white border-gray-300"
                   } border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
                 >
@@ -98,10 +98,10 @@ export const Education = ({ darkMode, register, handleSubmit, onSubmit }) => {
               </div>
               <div className="flex-1">
                 <select
-                  {...register("startYear")}
+                  {...register("education.startYear")}
                   className={`w-full ${
                     darkMode
-                      ? "bg-gray-800 border-gray-700"
+                      ? "bg-[#0D0F11] border-gray-700"
                       : "bg-white border-gray-300"
                   } border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
                 >
@@ -121,10 +121,10 @@ export const Education = ({ darkMode, register, handleSubmit, onSubmit }) => {
             <div className="flex space-x-4">
               <div className="flex-1">
                 <select
-                  {...register("endhMonth")}
+                  {...register("education.endhMonth")}
                   className={`w-full ${
                     darkMode
-                      ? "bg-gray-800 border-gray-700"
+                      ? "bg-[#0D0F11] border-gray-700"
                       : "bg-white border-gray-300"
                   } border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
                 >
@@ -138,10 +138,10 @@ export const Education = ({ darkMode, register, handleSubmit, onSubmit }) => {
               </div>
               <div className="flex-1">
                 <select
-                  {...register("endYear")}
+                  {...register("education.endYear")}
                   className={`w-full ${
                     darkMode
-                      ? "bg-gray-800 border-gray-700"
+                      ? "bg-[#0D0F11] border-gray-700"
                       : "bg-white border-gray-300"
                   } border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
                 >
