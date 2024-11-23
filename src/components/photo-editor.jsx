@@ -8,11 +8,15 @@ import { useTheme } from 'next-themes'
 import useFetchUserData from '@/app/Hooks/UserFetchData';
 export function ProfilePhotoEditor({setProfileImage,username, ProfileImage}) {
   const {userData, fetchUserData} = useFetchUserData();
+  const [previewImage, setPreviewImage] = useState()
+
   useEffect(()=>{
     fetchUserData(username);
-  },[username])
+    if(userData?.image){
+      setPreviewImage(userData.image)
+    }
+  },[username,userData?.image])
 
-  const [previewImage, setPreviewImage] = useState(userData.image)
   console.log(userData.image);
   
   const fileInputRef = useRef(null)
@@ -60,7 +64,7 @@ export function ProfilePhotoEditor({setProfileImage,username, ProfileImage}) {
     <>
       <div className="fixed inset-0 z-10 flex items-center justify-center">
         <div className="absolute inset-0 bg-black opacity-50 shadow-2xl"></div>
-        <div className="relative max-w-[600px] w-full bg-[#1B1F23] text-white border border-gray-700 rounded-lg shadow-lg p-4">
+        <div className="relative max-w-[600px] sm:h-auto h-screen flex flex-col justify-between w-full bg-[#1B1F23] text-white border border-gray-700 rounded-lg shadow-lg p-4">
           <Button
             onClick={()=>setProfileImage(!ProfileImage)}
             variant="ghost"
@@ -68,17 +72,17 @@ export function ProfilePhotoEditor({setProfileImage,username, ProfileImage}) {
             aria-label="Close">
             <X className="h-6 w-6"  />
           </Button>
-          <div className="border-b border-gray-700 p-6">
+          <div className="sm:border-b border-gray-700 p-6">
             <h2 className="text-2xl font-bold">Profile photo</h2>
           </div>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 p-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 relative p-6 sm:h-auto h-full flex flex-col justify-center items-center gap-10">
             <div className="flex justify-center">
-              <div className="relative bg-slate-400">
+              <div className="relative">
                 <img
                   src={previewImage}
                   alt="Profile"
                   className="rounded-full w-80 h-80 object-cover" />
-                <Controller
+                {/* <Controller
                   name="visibility"
                   control={control}
                   render={({ field }) => (
@@ -93,10 +97,11 @@ export function ProfilePhotoEditor({setProfileImage,username, ProfileImage}) {
                         <SelectItem value="private">Private</SelectItem>
                       </SelectContent>
                     </Select>
-                  )} />
+                  )} /> */}
               </div>
             </div>
-            <div className="flex flex-wrap justify-center gap-4">
+            <div className='sm:static absolute bottom-0 align-center'>
+            <div className="flex flex-wrap justify-center sm:gap-4 gap-2 ">
               <Button
                 type="button"
                 variant="outline"
@@ -113,13 +118,13 @@ export function ProfilePhotoEditor({setProfileImage,username, ProfileImage}) {
                 <Camera className="mr-2 h-4 w-4" />
                 Add photo
               </Button>
-              <Button
+              {/* <Button
                 type="button"
                 variant="outline"
                 className="text-white border-gray-600 hover:bg-gray-800 hover:border-gray-500">
                 <ImageIcon className="mr-2 h-4 w-4" />
                 Frames
-              </Button>
+              </Button> */}
               <Button
                 type="button"
                 variant="outline"
@@ -135,9 +140,10 @@ export function ProfilePhotoEditor({setProfileImage,username, ProfileImage}) {
               onChange={handleFileChange}
               accept="image/*"
               className="hidden" />
-            <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
+            <Button type="submit" className="w-full bg-blue-600  my-2 hover:bg-blue-700">
               Save
             </Button>
+            </div>
           </form>
         </div>
       </div>

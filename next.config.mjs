@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-      reactStrictMode: true,
+      reactStrictMode: false,
       experimental: {
         appDir: true, // Remove or enable depending on your setup
       },

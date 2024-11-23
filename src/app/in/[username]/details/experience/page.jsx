@@ -7,9 +7,17 @@ import { Edit, Plus } from "lucide-react"
 import Image from "next/image"
 import { ConnectButton } from "@/components/connection-buttons"
 import { useDarkMode } from "@/app/context/Context"
-export default function ExperiencePage() {
-
-   const { darkMode } = useDarkMode();
+import useFetchUserData from "@/app/Hooks/UserFetchData"
+import { useEffect } from "react";
+export default function ExperiencePage({params}) {
+  const {username} = params
+  const { darkMode } = useDarkMode();
+  const { userData, message, error, loading, fetchUserData } = useFetchUserData();
+  useEffect(()=>{
+    fetchUserData(username)
+    
+  },[username])  
+  console.log(userData.experience)
 
   return (
     (<div
@@ -25,39 +33,40 @@ export default function ExperiencePage() {
                   <Plus className="h-4 w-4" />
                 </Button>
               </CardHeader>
-              <CardContent>
-                <div className="flex gap-4">
-                  <Image
-                    src="/placeholder.svg"
-                    alt="Company"
-                    width={48}
-                    height={48}
-                    className="rounded" />
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-semibold">IT trainer Intern</h3>
-                      <Button variant="ghost" size="icon">
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <p className="text-sm">Arth institute of commerce & vocational studies - Internship</p>
-                    <p className="text-sm text-muted-foreground">Jan 2024 - Sep 2024 · 9 mos</p>
-                    <p className="text-sm text-muted-foreground">India · On-site</p>
-                    <p className="mt-2 text-sm">
-                      As an IT Trainer at the Art Institute, I delivered training on web development, programming, and IT
-                      infrastructure, focusing on both theoretical and hands-on learning. I guided students through real-world
-                      projects, tailored lessons to different learning styles, and collaborated on an up-to-date curriculum to help
-                      them develop essential tech skills for their careers.
-                    </p>
-                    <p className="mt-2 text-sm">
-                      <span className="font-semibold">Skills:</span> JavaScript · HTML/CSS · React.js · PHP · MySQL
-                    </p>
+             {userData?.experience?.map((exp, index) => (
+              <CardContent key={index}>
+              <div className="flex gap-4">
+                <Image
+                  src="/placeholder.svg"
+                  alt="Company"
+                  width={48}
+                  height={48}
+                  className="rounded" />
+                <div className="flex-1">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold"></h3>
+                    <Button variant="ghost" size="icon">
+                      <Edit className="h-4 w-4" />
+                    </Button>
                   </div>
+                  <p className="text-sm">Arth institute of commerce & vocational studies - Internship</p>
+                  <p className="text-sm text-muted-foreground">Jan 2024 - Sep 2024 · 9 mos</p>
+                  <p className="text-sm text-muted-foreground">India · On-site</p>
+                  <p className="mt-2 text-sm">
+                    As an IT Trainer at the Art Institute, I delivered training on web development, programming, and IT
+                    infrastructure, focusing on both theoretical and hands-on learning. I guided students through real-world
+                    projects, tailored lessons to different learning styles, and collaborated on an up-to-date curriculum to help
+                    them develop essential tech skills for their careers.
+                  </p>
+                  <p className="mt-2 text-sm">
+                    <span className="font-semibold">Skills:</span> JavaScript · HTML/CSS · React.js · PHP · MySQL
+                  </p>
                 </div>
-              </CardContent>
+              </div>
+            </CardContent>
+           ))} 
             </Card>
           </div>
-
           {/* Sidebar */}
           <div>
             <Card className={`dark:bg-[#1B1F23] dark:border-gray-700'`}>

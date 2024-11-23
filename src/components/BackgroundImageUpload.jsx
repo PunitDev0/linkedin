@@ -1,5 +1,5 @@
 'use client';
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { X, Upload, FolderOpen } from 'lucide-react';
 import { Button } from "@/components/ui/bgimageui/button";
@@ -7,6 +7,7 @@ import { useDropzone } from 'react-dropzone';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import axios from 'axios';
+import useFetchUserData from '@/app/Hooks/UserFetchData';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
@@ -22,9 +23,17 @@ const formSchema = z.object({
 });
 
 export function BackgroudImageEdit({ setbackground, username, refreshData }) {
-  const [previewImage, setPreviewImage] = useState(null);
+  const { userData, message, error, loading, fetchUserData } = useFetchUserData();
+  const [previewImage, setPreviewImage] = useState();
+  useEffect(()=>{
+    fetchUserData(username)
+    if (userData?.backgroundImage) {
+      setPreviewImage(userData.backgroundImage);
+    }
+  },[username,userData?.backgroundImage])
+  console.log(userData);
+  console.log(previewImage)
   const fileInputRef = useRef(null);
-
   const { register, handleSubmit, setValue, formState: { errors }, reset } = useForm({
     resolver: zodResolver(formSchema),
   });
@@ -32,20 +41,17 @@ export function BackgroudImageEdit({ setbackground, username, refreshData }) {
   const onSubmit = async (data) => {
     try {
       const formData = new FormData();
-      formData.append('image', data.image); // data.image should be a File object
-      console.log('FormData entries:', [...formData.entries()]); // Log the FormData entries
-      // // Log FormData contents
-      for (let [key, value] of formData.entries()) {
-        console.log(`${key}:`, value);
-      }
+      formData.append('image', data.image);
+      
       const response = await axios.post(`/api/background/${username}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
       console.log("Profile updated successfully", response.data);
-      // Optionally reset the form and preview
+
       reset();
       setPreviewImage(null);
+      refreshData();
     } catch (error) {
       console.error('Upload failed:', error);
     }
@@ -56,7 +62,7 @@ export function BackgroudImageEdit({ setbackground, username, refreshData }) {
       setValue('image', file, { shouldValidate: true });
       const reader = new FileReader();
       reader.onload = (e) => {
-        setPreviewImage(e.target?.result);
+        setPreviewImage(e.target.result);
       };
       reader.readAsDataURL(file);
     }
@@ -105,12 +111,12 @@ export function BackgroudImageEdit({ setbackground, username, refreshData }) {
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="p-4" encType="multipart/form-data">
           <div className="mb-4">
-            {!previewImage ? (+
-            
+            {!previewImage ? (
               <div
                 {...getRootProps()}
-                className="p-8 border-2 border-dashed border-zinc-700 rounded-lg text-center cursor-pointer hover:border-zinc-500 transition-colors">
-                <input {...getInputProps()} {...register('image')} />
+                className="p-8 border-2 border-dashed border-zinc-700 rounded-lg text-center cursor-pointer hover:border-zinc-500 transition-colors"
+              >
+                <input {...getInputProps()} />
                 <Upload className="w-12 h-12 mx-auto mb-4 text-zinc-400" />
                 {isDragActive ? (
                   <p>Drop the image here ...</p>
@@ -124,7 +130,8 @@ export function BackgroudImageEdit({ setbackground, username, refreshData }) {
                 <img
                   src={previewImage}
                   alt="Background"
-                  style={{ maxWidth: '100%', maxHeight: '60vh' }} />
+                  style={{ maxWidth: '100%', maxHeight: '60vh' }}
+                />
               </div>
             )}
             {errors.image && (
@@ -137,7 +144,8 @@ export function BackgroudImageEdit({ setbackground, username, refreshData }) {
               variant="ghost"
               className="text-blue-400 hover:text-blue-300"
               onClick={handleDelete}
-              disabled={!previewImage}>
+              disabled={!previewImage}
+            >
               Delete photo
             </Button>
             <div className="space-x-2">
@@ -145,14 +153,16 @@ export function BackgroudImageEdit({ setbackground, username, refreshData }) {
                 type="button"
                 variant="outline"
                 className="text-blue-400 border-blue-400 hover:bg-blue-400/10"
-                onClick={openFileFolder}>
+                onClick={openFileFolder}
+              >
                 <FolderOpen className="w-4 h-4 mr-2" />
                 {previewImage ? 'Change photo' : 'Upload photo'}
               </Button>
               <Button
                 type="submit"
                 className="bg-blue-600 text-white hover:bg-blue-700"
-                disabled={!previewImage}>
+                disabled={!previewImage}
+              >
                 Save
               </Button>
             </div>
@@ -163,7 +173,8 @@ export function BackgroudImageEdit({ setbackground, username, refreshData }) {
           ref={fileInputRef}
           onChange={handleFileInputChange}
           accept="image/*"
-          className="hidden" />
+          className="hidden"
+        />
       </div>
     </div>
   );

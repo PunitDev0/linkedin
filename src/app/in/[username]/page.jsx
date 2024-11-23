@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { Edit, Plus, Eye, BarChart2, Search as SearchIcon, Moon, Sun, Pencil, Fullscreen } from 'lucide-react';
+import { Edit, Plus, Eye, BarChart2, Search as SearchIcon, Moon, Sun, Pencil, Fullscreen} from 'lucide-react';
 import { useDarkMode } from '@/app/context/Context'; 
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
@@ -23,6 +23,7 @@ export default function ProfilePage({params}) {
   useEffect(()=>{
     fetchUserData(username)
   },[username])
+
   const router = useRouter();
   const handleRedirect = (path) => {
     router.push(path);
@@ -44,11 +45,11 @@ export default function ProfilePage({params}) {
     fetchUserData(); // Re-fetch data to reflect updates
   };
 
-    console.log(userData);
 
 
   return (
-    (<div
+    (
+    <div
       className="bg-gray-100 dark:bg-black min-h-screen text-gray-900 dark:text-gray-100 transition-colors duration-200 pt-10">
 
         {ProfileImage && <ProfilePhotoEditor  username={username} setProfileImage={setProfileImage} 
@@ -365,6 +366,7 @@ export default function ProfilePage({params}) {
           </div>
         </div>
       </main>
-    </div>)
+    </div>
+  )
   );
 }
