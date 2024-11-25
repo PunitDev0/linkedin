@@ -74,7 +74,7 @@ export default function ProfilePage({params}) {
         ProfileImage={ProfileImage}/>}
 
         {background && <BackgroudImageEdit setbackground={setbackground} username={username} refreshData={refreshData}/>}
-        {edit && <ProfileEditor about={about} setAbout={setAbout} setEdit={setEdit} username={username} refreshData={refreshData}/>}
+        {edit && <ProfileEditor about={about} isMobile={isMobile} setAbout={setAbout} setEdit={setEdit} username={username} refreshData={refreshData}/>}
 
         <ProfileModal isOpen={isOpen} onClose={() => setIsOpen(false)} isMobile={isMobile}/>
 
