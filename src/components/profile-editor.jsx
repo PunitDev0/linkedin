@@ -1,52 +1,52 @@
 "use client";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { X, Info, Plus, Moon, Sun, Upload, RotateCw, Crop, GripVertical } from "lucide-react";
+import { X } from "lucide-react";
 import axios from "axios";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useDarkMode } from "@/app/context/Context";
 import { LinkedLoader } from "./linkedin-loader";
-import { Experience } from "./ProfileEditOption/experience";
-import { EditProfile } from "./ProfileEditOption/EditProfile";
-import { SkillsInputComponent } from "./ProfileEditOption/Skills";
 import { About } from "./ProfileEditOption/About";
+import { SkillsInputComponent } from "./ProfileEditOption/Skills";
+import { EditProfile } from "./ProfileEditOption/EditProfile";
+import { Experience } from "./ProfileEditOption/experience";
 import { Phone } from "./ProfileEditOption/Phone";
 import { Education } from "./ProfileEditOption/Education";
 import useFetchUserData from "@/app/Hooks/UserFetchData";
 import { setFormValues } from "../../utils/setFormValues";
 
-export default function ProfileEditor({ setEdit, username, refreshData, setAbout, about}) {
-  // const [loading, setLoading] = useState(false);
-  const { userData, message, error, loading, fetchUserData } = useFetchUserData();
+export default function ProfileEditor({
+  setEdit,
+  username,
+  refreshData,
+  setAbout,
+  about,
+}) {
+  const { userData, loading, fetchUserData } = useFetchUserData();
   const [activeSection, setActiveSection] = useState("editProfile");
-  console.log(username);
-  const { register, handleSubmit, control, setValue, getValues, formState: { errors }, watch} = useForm({
+
+  const { register, handleSubmit, control, setValue, getValues, formState: { errors }, watch } = useForm({
     defaultValues: {
-      skills: ['skills', 'react'],
-      newSkill: '',
-    }
-  
+      skills: ["skills", "react"],
+      newSkill: "",
+    },
   });
   const { darkMode } = useDarkMode();
-    useEffect(()=>{
-      fetchUserData(username)
-    },[username])
 
-    console.log(userData.contact);
-    
-     // Set form values after user data is fetched
-     useEffect(() => {
-      if (userData) {
-        setFormValues(setValue, userData); // Call the utility function
-      }
-    }, [userData, setValue]);
+  useEffect(() => {
+    fetchUserData(username);
+  }, [username]);
 
-  const onSubmit = async (data) => {  
-    console.log(data); 
+  useEffect(() => {
+    if (userData) {
+      setFormValues(setValue, userData);
+    }
+  }, [userData, setValue]);
+
+  const onSubmit = async (data) => {
     try {
-      const response = await axios.post(`/api/user/${username}`, data); // Send the rest of the form data
+      const response = await axios.post(`/api/user/${username}`, data);
       console.log("Profile updated successfully", response.data);
-      refreshData()
+      refreshData();
     } catch (error) {
       console.error(
         "Error updating profile:",
@@ -55,49 +55,45 @@ export default function ProfileEditor({ setEdit, username, refreshData, setAbout
     }
   };
 
-
-
   return (
-    <div className={`fixed inset-0 z-10`}>
+    <div className="fixed inset-0 z-50 flex justify-center items-center">
       {/* Modal backdrop */}
-      <div className="absolute h-screen inset-0 bg-black opacity-50 shadow-2xl"></div>
+      <div className="absolute inset-0 bg-black opacity-50"></div>
 
+      {/* Modal */}
       <div
         className={`${
           darkMode ? "bg-[#1B1F23] text-gray-200" : "bg-white text-gray-800"
-        } fixed sm:h-[600px] h-[100vh] z-20 rounded-lg shadow-lg lg:max-w-2xl w-[100%] md:w-[80%] lg:w-[60%] m-auto left-[50%] top-[50%] transform -translate-x-1/2 -translate-y-1/2 overflow-auto scrollbar-none`}
+        } fixed sm:h-[600px] h-[95vh] z-50 rounded-lg shadow-lg w-[90%] sm:w-[80%] md:w-[60%] lg:w-[50%] overflow-hidden flex flex-col`}
       >
-       
-        {/* Header with Edit button */}
-        <div className="flex sticky top-0 border-b px-3 h-16 z-10 bg-[#1B1F23] justify-between items-center w-full">
-          <h2 className="text-2xl font-bold">Edit intro</h2>
+        {/* Header */}
+        <div className="flex items-center justify-between p-4 border-b bg-opacity-90 sticky top-0 z-10">
+          <h2 className="text-2xl font-bold">Edit Profile</h2>
           <button
+            onClick={() => {
+              setEdit();
+              setAbout(false);
+            }}
+            type="button"
             className={`${
               darkMode
                 ? "text-gray-400 hover:text-gray-200"
                 : "text-gray-600 hover:text-gray-800"
             }`}
-            onClick={() => {
-              setEdit()
-              setAbout(false)
-            }}
-            type="button"
           >
             <X size={24} />
           </button>
         </div>
 
-        {/* Scrollable content */}
-        
-        {/* Fixed Save button at the bottom */}
-        {loading ? (
-           <div className="h-screen flex items-center justify-center">
-             <LinkedLoader />
-          </div>
-        ) : (
-          about ? (
-            <div className="overflow-x-auto px-4 py-6 h-full">
-              <About 
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto px-4 py-6">
+          {loading ? (
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70">
+              <LinkedLoader />
+            </div>
+          ) : about ? (
+            <>
+              <About
                 register={register}
                 handleSubmit={handleSubmit}
                 onSubmit={onSubmit}
@@ -111,15 +107,16 @@ export default function ProfileEditor({ setEdit, username, refreshData, setAbout
                 onSubmit={onSubmit}
                 darkMode={darkMode}
               />
-            </div>
+            </>
           ) : (
-            <div className="overflow-x-auto px-4 py-6">
+            <>
               <p
-                className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-600"} mb-1`}
+                className={`text-sm ${
+                  darkMode ? "text-gray-400" : "text-gray-600"
+                } mb-1`}
               >
                 * Indicates required
               </p>
-              {/* Conditional sections */}
               {activeSection === "editProfile" && (
                 <EditProfile
                   darkMode={darkMode}
@@ -130,16 +127,16 @@ export default function ProfileEditor({ setEdit, username, refreshData, setAbout
                   setActiveSection={setActiveSection}
                 />
               )}
-                {activeSection === "position" && (
-                 <Experience
-                 darkMode={false}
-                 register={register}
-                 handleSubmit={handleSubmit}
-                 onSubmit={onSubmit}
-                 errors={errors}
-                 watch={watch} // Pass watch to child component if needed
-               />
-                )}
+              {activeSection === "position" && (
+                <Experience
+                  darkMode={false}
+                  register={register}
+                  handleSubmit={handleSubmit}
+                  onSubmit={onSubmit}
+                  errors={errors}
+                  watch={watch}
+                />
+              )}
               {activeSection === "phone" && (
                 <Phone
                   register={register}
@@ -164,24 +161,25 @@ export default function ProfileEditor({ setEdit, username, refreshData, setAbout
                 onSubmit={onSubmit}
                 darkMode={darkMode}
               />
-            </div>
-          )
-        )}
+            </>
+          )}
+        </div>
 
-          <div className="sticky bottom-0 border-t px-3 h-16 bg-[#1B1F23] flex justify-end items-center">
-            <button
-              className={`${
-                darkMode
-                  ? "text-gray-200 bg-green-600 hover:bg-green-700"
-                  : "text-gray-800 bg-green-500 hover:bg-green-600"
-              } px-4 py-2 rounded-lg`}
-              onClick={handleSubmit(onSubmit)}
-              type="submit"
-            >
-              Save
-            </button>
-          </div>
+        {/* Footer */}
+        <div className="p-4 border-t bg-opacity-90 sticky bottom-0 z-10">
+          <button
+            onClick={handleSubmit(onSubmit)}
+            type="submit"
+            className={`${
+              darkMode
+                ? "text-gray-200 bg-green-600 hover:bg-green-700"
+                : "text-gray-800 bg-green-500 hover:bg-green-600"
+            } px-4 py-2 rounded-lg w-full`}
+          >
+            Save
+          </button>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
