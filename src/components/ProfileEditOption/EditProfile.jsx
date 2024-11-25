@@ -1,6 +1,7 @@
 import { X, Info, Plus, Moon, Sun, Upload, RotateCw, Crop, GripVertical } from "lucide-react";
 
 export const EditProfile = ({
+  setValue,
     darkMode,
     setActiveSection,
     register,
@@ -297,6 +298,23 @@ export const EditProfile = ({
                   } border rounded px-3 py-2 focus:outline-none focus:border-blue-500`}
                 />
               </div>
+              <div className="space-y-6">
+            <h3 className="text-xl font-semibold mb-2">Contact Info</h3>
+            <div>
+              <label
+                htmlFor="currentPosition"
+                className="block text-sm font-medium mb-1"
+              >
+                Contact Info *
+              </label>
+            </div>
+            <button
+              className="mt-2 text-blue-400 hover:underline flex items-center"
+              onClick={() => setActiveSection("phone")}
+            >
+              Edit Contact Info
+            </button>
+          </div>
             </div>
         </form>
       </>

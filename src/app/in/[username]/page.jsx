@@ -11,6 +11,7 @@ import { BackgroudImageEdit } from '@/components/BackgroundImageUpload';
 import { ProfilePhotoEditor } from '@/components/photo-editor';
 import { ConnectButton } from '@/components/connection-buttons';
 import useFetchUserData from '@/app/Hooks/UserFetchData';
+import NavbarComponent from '@/components/navbar';
 export default function ProfilePage({params}) {
   const { username } = params;
   const [background, setbackground] = useState(false)
@@ -38,19 +39,20 @@ export default function ProfilePage({params}) {
         localStorage.setItem('username', username);
         fetchUserData();
       }
-    }, [username]);
+    }, [username]); 
 
      // Function to refresh user data after update
   const refreshData = () => {
-    fetchUserData(); // Re-fetch data to reflect updates
+    fetchUserData(username); // Re-fetch data to reflect updates
   };
 
 
 
   return (
     (
+      <NavbarComponent>
     <div
-      className="bg-gray-100 dark:bg-black min-h-screen text-gray-900 dark:text-gray-100 transition-colors duration-200 pt-10">
+      className="bg-gray-100 dark:bg-black min-h-screen text-gray-900 dark:text-gray-100 transition-colors duration-200 ">
 
         {ProfileImage && <ProfilePhotoEditor  username={username} setProfileImage={setProfileImage} 
         ProfileImage={ProfileImage}/>}
@@ -62,11 +64,14 @@ export default function ProfilePage({params}) {
         <div
           className="bg-white dark:bg-[#1B1F23] rounded-lg shadow-sm overflow-hidden mb-6">
           <div className="h-32 md:h-48 bg-[#1B1F23] dark:bg-[#1B1F23] relative">
-            <Image
-              src={userData.backgroundImage}
-              alt="Banner"
-              layout="fill" // Automatically adjusts to parent size
-              className="w-full h-full object-cover" />
+          <Image
+            src={userData.backgroundImage || '/default-banner.jpg'} // Fallback image if empty
+            alt="Banner"
+            fill // Automatically adjusts to parent size
+            style={{ objectFit: 'cover' }}
+            priority
+          />
+              
             <button
               className="absolute top-2 right-2 p-2 bg-white dark:bg-[#1B1F23] rounded-full shadow-md">
               <Pencil size={16} onClick={()=> setbackground(!background)} className="text-gray-600 dark:text-gray-300" />
@@ -367,6 +372,7 @@ export default function ProfilePage({params}) {
         </div>
       </main>
     </div>
+    </NavbarComponent>
   )
   );
 }

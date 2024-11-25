@@ -5,9 +5,9 @@
 
   await dbConnect();
 
-  export async function GET(req,{params}){
+  export async function GET(req, {params}){
       const { username } = params;
-      console.log(username);
+      
       try{
           const user = await User.findOne({username:username})
 
@@ -22,9 +22,12 @@
       }
   }
 
+  
+
   export async function POST(req, { params }) {
     const { username } = params; // Get username from URL parameters
-  
+    console.log("post" + username);
+    
     try {
       // Connect to the database
       await dbConnect();

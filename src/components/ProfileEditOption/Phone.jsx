@@ -33,7 +33,7 @@ export const Phone = ({ darkMode, register, handleSubmit, onSubmit }) => {
               Phone Number*
             </label>
             <input
-              {...register("phone")}
+              {...register("contact.phone")}
               type="tel"
               id="phone"
               className={`w-full ${
@@ -49,7 +49,7 @@ export const Phone = ({ darkMode, register, handleSubmit, onSubmit }) => {
               Address
             </label>
             <textarea
-              {...register("address")}
+              {...register("contact.address")}
               id="address"
               rows={3}
               className={`w-full ${
@@ -65,7 +65,7 @@ export const Phone = ({ darkMode, register, handleSubmit, onSubmit }) => {
             <div className="flex space-x-4">
               <div className="flex-1">
                 <select
-                  {...register("birthMonth")}
+                  {...register("contact.month")}
                   className={`w-full ${
                     darkMode
                       ? "bg-gray-800 border-gray-700"
@@ -82,7 +82,7 @@ export const Phone = ({ darkMode, register, handleSubmit, onSubmit }) => {
               </div>
               <div className="flex-1">
                 <select
-                  {...register("birthDay")}
+                  {...register("contact.day")}
                   className={`w-full ${
                     darkMode
                       ? "bg-gray-800 border-gray-700"
@@ -99,7 +99,7 @@ export const Phone = ({ darkMode, register, handleSubmit, onSubmit }) => {
               </div>
               <div className="flex-1">
                 <select
-                  {...register("birthYear")}
+                  {...register("contact.year")}
                   className={`w-full ${
                     darkMode
                       ? "bg-gray-800 border-gray-700"

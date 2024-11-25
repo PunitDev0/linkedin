@@ -12,7 +12,7 @@ export const About = ({
                   id="about"
                   {...register("about")}
                   placeholder="Write a brief description about your education..."
-                  className={`w-full h-32 px-3 py-2 text-sm rounded-md border ${
+                  className={`w-full h-48 px-3 py-2 text-sm rounded-md border ${
                     darkMode
                       ? "bg-[#0D0F11] border-none text-white"
                       : "bg-white border-gray-300 text-gray-900"
@@ -21,4 +21,3 @@ export const About = ({
               </form>
     )
   }
-  z

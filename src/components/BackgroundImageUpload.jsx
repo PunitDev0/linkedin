@@ -103,7 +103,7 @@ export function BackgroudImageEdit({ setbackground, username, refreshData }) {
   return (
     <div className="fixed inset-0 z-10 bg-black bg-opacity-50 flex items-center justify-center p-4">
       <div className="bg-zinc-900 text-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div className="flex justify-between items-center p-4 border-b border-zinc-700 sticky top-0 bg-zinc-900 z-10">
+        <div className="flex justify-between items-center p-4 border-b border-zinc-700 sticky top-0 bg-zinc-900 z-10">  
           <h2 className="text-xl font-semibold">Background photo</h2>
           <button className="text-zinc-400 hover:text-white" onClick={() => setbackground(false)}>
             <X className="w-6 h-6" />

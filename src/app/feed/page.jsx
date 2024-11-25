@@ -15,6 +15,7 @@ import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import { useLoading } from '../context/Context';
 import { LinkedInPost } from '@/components/linkedin-post-creator';
+import NavbarComponent from '@/components/navbar';
 export default  function Feed() {
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -109,7 +110,9 @@ export default  function Feed() {
   // }
 
   return (
-    (<div className={`min-h-screen ${darkMode ? 'dark' : ''} pt-14`}>
+    (
+    <NavbarComponent>
+    <div className={`min-h-screen ${darkMode ? 'dark' : ''} `}>
       <div className="bg-[#F4F2EE] dark:bg-black text-gray-900 dark:text-white p-4">
 
           {openPost && <LinkedInPost onTrigger={triggerFunction} setopenPost={setopenPost} />}
@@ -330,6 +333,8 @@ export default  function Feed() {
           </aside>
         </main>
       </div>
-    </div>)
+     </div>
+    </NavbarComponent>
+    )
   );
 }

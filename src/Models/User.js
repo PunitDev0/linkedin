@@ -48,10 +48,6 @@ const UserSchema = new mongoose.Schema({
     default: '',
     sparse: true,
   },
-  bio: {
-    type: String,
-    default: '',
-  },
   country: {
     type: String,
     default: '',
@@ -129,7 +125,7 @@ const UserSchema = new mongoose.Schema({
     address: String,
     month: Number,
     day: Number,
-    year: Number,
+    year: Number
   }],
   connections: [{
     type: mongoose.Schema.Types.ObjectId,

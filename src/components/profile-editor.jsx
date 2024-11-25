@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { X, Info, Plus, Moon, Sun, Upload, RotateCw, Crop, GripVertical } from "lucide-react";
 import axios from "axios";
 import { useForm, Controller } from "react-hook-form";
@@ -13,10 +13,11 @@ import { About } from "./ProfileEditOption/About";
 import { Phone } from "./ProfileEditOption/Phone";
 import { Education } from "./ProfileEditOption/Education";
 import useFetchUserData from "@/app/Hooks/UserFetchData";
-// This component is a modal that allows users to edit their profile
+import { setFormValues } from "../../utils/setFormValues";
 
 export default function ProfileEditor({ setEdit, username, refreshData, setAbout, about}) {
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
+  const { userData, message, error, loading, fetchUserData } = useFetchUserData();
   const [activeSection, setActiveSection] = useState("editProfile");
   console.log(username);
   const { register, handleSubmit, control, setValue, getValues, formState: { errors }, watch} = useForm({
@@ -27,11 +28,21 @@ export default function ProfileEditor({ setEdit, username, refreshData, setAbout
   
   });
   const { darkMode } = useDarkMode();
+    useEffect(()=>{
+      fetchUserData(username)
+    },[username])
+
+    console.log(userData.contact);
+    
+     // Set form values after user data is fetched
+     useEffect(() => {
+      if (userData) {
+        setFormValues(setValue, userData); // Call the utility function
+      }
+    }, [userData, setValue]);
 
   const onSubmit = async (data) => {  
     console.log(data); 
-        
-    setLoading(true)
     try {
       const response = await axios.post(`/api/user/${username}`, data); // Send the rest of the form data
       console.log("Profile updated successfully", response.data);
@@ -41,8 +52,6 @@ export default function ProfileEditor({ setEdit, username, refreshData, setAbout
         "Error updating profile:",
         error.response?.data || error.message
       );
-    }finally {
-      setLoading(false); // Stop loading
     }
   };
 
@@ -117,6 +126,7 @@ export default function ProfileEditor({ setEdit, username, refreshData, setAbout
                   register={register}
                   handleSubmit={handleSubmit}
                   onSubmit={onSubmit}
+                  setValue={setValue}
                   setActiveSection={setActiveSection}
                 />
               )}

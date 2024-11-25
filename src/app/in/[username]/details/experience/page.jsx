@@ -36,6 +36,7 @@ export default function ExperiencePage({params}) {
              {userData?.experience?.map((exp, index) => (
               <CardContent key={index}>
               <div className="flex gap-4">
+                <p>{index}</p>
                 <Image
                   src="/placeholder.svg"
                   alt="Company"
