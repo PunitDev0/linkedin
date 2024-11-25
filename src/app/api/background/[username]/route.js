@@ -1,8 +1,14 @@
 import fs from 'fs';
 import path from 'path';
 import { NextResponse } from 'next/server';
-import { dbConnect } from '@/lib/db'; // Adjust path if necessary
-import User from '@/Models/User'; // Adjust path if necessary
+import { dbConnect } from '@/lib/db'; // Adjust path as necessary
+import User from '@/Models/User'; // Adjust path as necessary
+
+export const config = {
+  api: {
+    bodyParser: false, // Required to handle file uploads
+  },
+};
 
 export async function POST(request, { params }) {
   const { username } = params;
@@ -19,7 +25,7 @@ export async function POST(request, { params }) {
       return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
     }
 
-    // Check file type and size (optional but recommended for production)
+    // Validate file type
     const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/jpg'];
     if (!allowedMimeTypes.includes(imageFile.type)) {
       return NextResponse.json(
@@ -28,7 +34,7 @@ export async function POST(request, { params }) {
       );
     }
 
-    // Define the upload directory
+    // Define upload directory
     const uploadDir = path.join(process.cwd(), 'public', 'images', 'background');
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
@@ -38,13 +44,13 @@ export async function POST(request, { params }) {
     const uniqueFileName = `${Date.now()}-${imageFile.name}`;
     const newFilePath = path.join(uploadDir, uniqueFileName);
 
-    // Check if the user exists
+    // Check if user exists
     const user = await User.findOne({ username });
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    // Remove the old image if it exists
+    // Remove old image if it exists
     if (user.backgroundImage) {
       const oldFilePath = path.join(process.cwd(), 'public', user.backgroundImage);
       if (fs.existsSync(oldFilePath)) {
@@ -56,7 +62,7 @@ export async function POST(request, { params }) {
       }
     }
 
-    // Save the new file
+    // Save new file
     const buffer = Buffer.from(await imageFile.arrayBuffer());
     fs.writeFileSync(newFilePath, buffer);
 
