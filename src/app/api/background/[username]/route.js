@@ -1,63 +1,71 @@
-// /app/api/background/[username]/route.js
 import fs from 'fs';
 import path from 'path';
 import { NextResponse } from 'next/server';
-import { dbConnect } from '@/lib/db'; // Adjust path as necessary
-import User from '@/Models/User'; // Adjust path as necessary
+import { dbConnect } from '@/lib/db'; // Adjust path if necessary
+import User from '@/Models/User'; // Adjust path if necessary
 
 export async function POST(request, { params }) {
   const { username } = params;
-  
-  await dbConnect(); // Connect to the database
 
   try {
-    // Parse the incoming form data
-    const formData = await request.formData();
-    const imageFile = formData.get('image'); // 'image' should be the name of the field used in the FormData object on the client-side
+    // Connect to the database
+    await dbConnect();
 
-    if (!imageFile || !imageFile.name) {
+    // Parse form data
+    const formData = await request.formData();
+    const imageFile = formData.get('image'); // Ensure 'image' matches the client-side form field name
+
+    if (!imageFile) {
       return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
     }
 
-    // Define the save location for the uploaded file
+    // Check file type and size (optional but recommended for production)
+    const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+    if (!allowedMimeTypes.includes(imageFile.type)) {
+      return NextResponse.json(
+        { error: 'Invalid file type. Only JPEG and PNG are allowed.' },
+        { status: 400 }
+      );
+    }
+
+    // Define the upload directory
     const uploadDir = path.join(process.cwd(), 'public', 'images', 'background');
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
 
-    // Generate a unique filename for the new image
+    // Generate unique file name
     const uniqueFileName = `${Date.now()}-${imageFile.name}`;
     const newFilePath = path.join(uploadDir, uniqueFileName);
 
-    // Find the user by username
+    // Check if the user exists
     const user = await User.findOne({ username });
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    // If user already has a background image, delete the old image
+    // Remove the old image if it exists
     if (user.backgroundImage) {
       const oldFilePath = path.join(process.cwd(), 'public', user.backgroundImage);
-      try {
-        if (fs.existsSync(oldFilePath)) {
-          fs.unlinkSync(oldFilePath); // Delete old image file
+      if (fs.existsSync(oldFilePath)) {
+        try {
+          fs.unlinkSync(oldFilePath);
+        } catch (err) {
+          console.error('Error deleting old image:', err);
         }
-      } catch (error) {
-        console.error('Error deleting old image:', error);
-        return NextResponse.json({ error: 'Failed to delete old image' }, { status: 500 });
       }
     }
 
-    // Convert the Blob to a Buffer and save the new file to the filesystem
+    // Save the new file
     const buffer = Buffer.from(await imageFile.arrayBuffer());
     fs.writeFileSync(newFilePath, buffer);
 
-    // Update the user's profile with the new image path
-    user.backgroundImage = `/images/background/${uniqueFileName}`; // Save relative path for easy frontend access
+    // Update user's profile with the new image path
+    user.backgroundImage = `/images/background/${uniqueFileName}`;
     await user.save();
 
     return NextResponse.json({
-      message: 'Image uploaded and user profile updated successfully',
+      message: 'Image uploaded and profile updated successfully',
       backgroundImage: user.backgroundImage,
     });
   } catch (error) {
