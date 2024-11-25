@@ -5,7 +5,8 @@ export const About = ({
     handleSubmit,
     onSubmit,}) => {
     return(
-      <div className="p-6">
+      
+              <form className="p-6" onSubmit={handleSubmit(onSubmit)}>
                  <h2 className="text-xl font-semibold mb-1">About</h2>
                 <textarea
                   id="about"
@@ -17,6 +18,7 @@ export const About = ({
                       : "bg-white border-gray-300 text-gray-900"
                   } focus:outline-none focus:ring-2 focus:ring-blue-500`}
                 />
-              </div>
+              </form>
     )
   }
+  z
