@@ -4,11 +4,11 @@ import { NextResponse } from 'next/server';
 import { dbConnect } from '@/lib/db'; // Adjust path as necessary
 import User from '@/Models/User'; // Adjust path as necessary
 
-export const config = {
-  api: {
-    bodyParser: false, // Required to handle file uploads
-  },
-};
+// export const config = {
+//   api: {
+//     bodyParser: false, // Required to handle file uploads
+//   },
+// };
 
 export async function POST(request, { params }) {
   const { username } = params;
