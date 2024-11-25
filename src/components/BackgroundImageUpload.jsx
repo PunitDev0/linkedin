@@ -22,47 +22,57 @@ const formSchema = z.object({
     }),
 });
 
-export function BackgroudImageEdit({ setbackground, username, refreshData }) {
+export function BackgroundImageEdit({ setbackground, username, refreshData }) {
   const { userData, message, error, loading, fetchUserData } = useFetchUserData();
-  const [previewImage, setPreviewImage] = useState();
-  useEffect(()=>{
-    fetchUserData(username)
+  const [previewImage, setPreviewImage] = useState(null);
+  
+  // Fetch user data only once on mount and when username changes
+  useEffect(() => {
+    if (username) {
+      fetchUserData(username);
+    }
+  }, [username, fetchUserData]);
+
+  // Set preview image if user has a background image
+  useEffect(() => {
     if (userData?.backgroundImage) {
       setPreviewImage(userData.backgroundImage);
     }
-  },[username,userData?.backgroundImage])
-  console.log(userData);
-  console.log(previewImage)
+  }, [userData]);
+
   const fileInputRef = useRef(null);
   const { register, handleSubmit, setValue, formState: { errors }, reset } = useForm({
     resolver: zodResolver(formSchema),
   });
 
+  // Handle form submission to upload image
   const onSubmit = async (data) => {
     try {
       const formData = new FormData();
       formData.append('image', data.image);
-      
+
       const response = await axios.post(`/api/background/${username}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
       console.log("Profile updated successfully", response.data);
-
-      reset();
-      setPreviewImage(null);
-      refreshData();
+      reset();  // Reset the form state
+      setPreviewImage(null);  // Clear preview
+      refreshData();  // Refresh the data
     } catch (error) {
       console.error('Upload failed:', error);
+      // Show user-friendly error message
+      alert('Failed to upload image. Please try again.');
     }
   };
 
+  // Handle file input change for image preview
   const handleImageUpload = (file) => {
-    if (file && file.type.startsWith('image/')) {
+    if (file?.type?.startsWith('image/')) {
       setValue('image', file, { shouldValidate: true });
       const reader = new FileReader();
       reader.onload = (e) => {
-        setPreviewImage(e.target.result);
+        setPreviewImage(e.target?.result);
       };
       reader.readAsDataURL(file);
     }
@@ -77,7 +87,7 @@ export function BackgroudImageEdit({ setbackground, username, refreshData }) {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: { 'image/*': [] },
+    accept: 'image/*',
     maxSize: MAX_FILE_SIZE,
   });
 
@@ -92,7 +102,7 @@ export function BackgroudImageEdit({ setbackground, username, refreshData }) {
     setPreviewImage(null);
     reset();
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = '';  // Clear file input
     }
   };
 
