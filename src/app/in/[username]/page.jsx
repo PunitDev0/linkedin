@@ -12,6 +12,7 @@ import { ProfilePhotoEditor } from '@/components/photo-editor';
 import { ConnectButton } from '@/components/connection-buttons';
 import useFetchUserData from '@/app/Hooks/UserFetchData';
 import NavbarComponent from '@/components/navbar';
+import ProfileModal from '@/components/profile-modal';
 export default function ProfilePage({params}) {
   const { username } = params;
   const [background, setbackground] = useState(false)
@@ -46,6 +47,21 @@ export default function ProfilePage({params}) {
     fetchUserData(username); // Re-fetch data to reflect updates
   };
 
+  const useIsMobile = () => {
+    const [isMobile, setIsMobile] = useState(false)
+  
+    useEffect(() => {
+      const checkIsMobile = () => setIsMobile(window.innerWidth < 640)
+      checkIsMobile()
+      window.addEventListener('resize', checkIsMobile)
+      return () => window.removeEventListener('resize', checkIsMobile)
+    }, [])
+  
+    return isMobile
+  }
+
+  const [isOpen, setIsOpen] = useState(false)
+  const isMobile = useIsMobile()
 
 
   return (
@@ -59,6 +75,8 @@ export default function ProfilePage({params}) {
 
         {background && <BackgroudImageEdit setbackground={setbackground} username={username} refreshData={refreshData}/>}
         {edit && <ProfileEditor about={about} setAbout={setAbout} setEdit={setEdit} username={username} refreshData={refreshData}/>}
+
+        <ProfileModal isOpen={isOpen} onClose={() => setIsOpen(false)} isMobile={isMobile}/>
 
       <main className="container mx-auto px-4 py-8">
         <div
@@ -103,7 +121,8 @@ export default function ProfilePage({params}) {
               <div>
                 <h1 className="text-2xl font-bold">{`${userData.firstname} ${userData.lastname}`}</h1>
                 <p className="text-gray-600 dark:text-gray-400">Full Stack Developer & MERN Stack Developer</p>
-                <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">New Delhi, Delhi, India · Contact info</p>
+                <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">New Delhi, Delhi, India</p>
+                <button onClick={() => setIsOpen(true)}>Contact Info</button>
                 <p className="text-sm text-gray-500 dark:text-gray-500">257 followers · 229 connections</p>
               </div>
               <div className="flex flex-wrap gap-2 mt-4 md:mt-0">
