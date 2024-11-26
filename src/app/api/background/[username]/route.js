@@ -1,14 +1,14 @@
-import fs from 'fs';
-import path from 'path';
 import { NextResponse } from 'next/server';
-import { dbConnect } from '@/lib/db'; // Adjust path as necessary
-import User from '@/Models/User'; // Adjust path as necessary
+import { dbConnect } from '@/lib/db';
+import User from '@/Models/User';
+import cloudinary from 'cloudinary';
 
-// export const config = {
-//   api: {
-//     bodyParser: false, // Required to handle file uploads
-//   },
-// };
+// Configure Cloudinary
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export async function POST(request, { params }) {
   const { username } = params;
@@ -19,7 +19,7 @@ export async function POST(request, { params }) {
 
     // Parse form data
     const formData = await request.formData();
-    const imageFile = formData.get('image'); // Ensure 'image' matches the client-side form field name
+    const imageFile = formData.get('image');
 
     if (!imageFile) {
       return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
@@ -34,40 +34,44 @@ export async function POST(request, { params }) {
       );
     }
 
-    // Define upload directory
-    const uploadDir = path.join(process.cwd(), 'public', 'images', 'background');
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
-
-    // Generate unique file name
-    const uniqueFileName = `${Date.now()}-${imageFile.name}`;
-    const newFilePath = path.join(uploadDir, uniqueFileName);
-
     // Check if user exists
     const user = await User.findOne({ username });
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    // Remove old image if it exists
+    // Remove old image from Cloudinary if it exists
     if (user.backgroundImage) {
-      const oldFilePath = path.join(process.cwd(), 'public', user.backgroundImage);
-      if (fs.existsSync(oldFilePath)) {
-        try {
-          fs.unlinkSync(oldFilePath);
-        } catch (err) {
-          console.error('Error deleting old image:', err);
-        }
+      const oldPublicId = extractPublicId(user.backgroundImage);
+      if (oldPublicId) {
+        await cloudinary.v2.uploader.destroy(oldPublicId);
       }
     }
 
-    // Save new file
+    // Upload the new image to Cloudinary
     const buffer = Buffer.from(await imageFile.arrayBuffer());
-    fs.writeFileSync(newFilePath, buffer);
 
-    // Update user's profile with the new image path
-    user.backgroundImage = `/images/background/${uniqueFileName}`;
+    const uploadResult = await new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.v2.uploader.upload_stream(
+        {
+          folder: 'user_backgrounds', // Organize uploads in a folder
+          resource_type: 'image',
+        },
+        (error, result) => {
+          if (error) {
+            console.error('Cloudinary upload error:', error);
+            reject(new Error('Cloudinary upload failed'));
+          } else {
+            resolve(result);
+          }
+        }
+      );
+
+      uploadStream.end(buffer);
+    });
+
+    // Update user with the new image URL
+    user.backgroundImage = uploadResult.secure_url;
     await user.save();
 
     return NextResponse.json({
@@ -77,5 +81,18 @@ export async function POST(request, { params }) {
   } catch (error) {
     console.error('Error uploading file:', error);
     return NextResponse.json({ error: 'Failed to upload file' }, { status: 500 });
+  }
+}
+
+// Helper function to extract the public ID from a Cloudinary URL
+function extractPublicId(url) {
+  try {
+    const parts = url.split('/');
+    const fileWithExtension = parts.pop();
+    const [publicId] = fileWithExtension.split('.');
+    return publicId;
+  } catch {
+    console.error('Error extracting public ID from URL');
+    return null;
   }
 }

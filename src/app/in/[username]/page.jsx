@@ -83,7 +83,7 @@ export default function ProfilePage({params}) {
           className="bg-white dark:bg-[#1B1F23] rounded-lg shadow-sm overflow-hidden mb-6">
           <div className="h-32 md:h-48 bg-[#1B1F23] dark:bg-[#1B1F23] relative">
           <Image
-            src={userData.backgroundImage || '/default-banner.jpg'} // Fallback image if empty
+              src={userData.backgroundImage ? `${userData.backgroundImage}` : '/default-banner.jpg'} // Fallback image if empty
             alt="Banner"
             fill // Automatically adjusts to parent size
             style={{ objectFit: 'cover' }}
