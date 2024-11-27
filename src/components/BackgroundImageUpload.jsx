@@ -162,14 +162,14 @@ export function BackgroudImageEdit({ setbackground, username, refreshData }) {
                 <FolderOpen className="w-4 h-4 mr-2" />
                 {previewImage ? 'Change photo' : 'Upload photo'}
               </Button>
-              <Button
+              {/* <Button
                 type="submit"
                 className="bg-blue-600 text-white hover:bg-blue-700"
                 disabled={!previewImage}
                 isLoading={loading}
               >
                 Save
-              </Button>
+              </Button> */}
             </div>
           </div>
         </form>
