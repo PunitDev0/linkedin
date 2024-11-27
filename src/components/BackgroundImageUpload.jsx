@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import axios from 'axios';
 import useFetchUserData from '@/app/Hooks/UserFetchData';
+import loading from '@/app/in/[username]/details/experience/loading';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
@@ -25,7 +26,7 @@ const formSchema = z.object({
 export function BackgroudImageEdit({ setbackground, username, refreshData }) {
   const { userData, fetchUserData } = useFetchUserData();
   const [previewImage, setPreviewImage] = useState();
-  
+  const [loaing, setloading] = useState(false);
   // Fetch user data and update preview image
   useEffect(() => {
     fetchUserData(username);
@@ -44,7 +45,7 @@ export function BackgroudImageEdit({ setbackground, username, refreshData }) {
     try {
       const formData = new FormData();
       formData.append('image', data.image);
-      
+      setloading(true);
       const response = await axios.post(`/api/background/${username}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
@@ -55,6 +56,8 @@ export function BackgroudImageEdit({ setbackground, username, refreshData }) {
       refreshData?.();
     } catch (error) {
       console.error('Upload failed:', error?.response || error?.message);
+    }finally{
+      setloading(false)
     }
   };
 
@@ -159,13 +162,14 @@ export function BackgroudImageEdit({ setbackground, username, refreshData }) {
                 <FolderOpen className="w-4 h-4 mr-2" />
                 {previewImage ? 'Change photo' : 'Upload photo'}
               </Button>
-              {/* <Button
+              <Button
                 type="submit"
                 className="bg-blue-600 text-white hover:bg-blue-700"
                 disabled={!previewImage}
+                isLoading={loading}
               >
                 Save
-              </Button> */}
+              </Button>
             </div>
           </div>
         </form>
