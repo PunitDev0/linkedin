@@ -44,7 +44,11 @@ export async function POST(request, { params }) {
     if (user.backgroundImage) {
       const oldPublicId = extractPublicId(user.backgroundImage);
       if (oldPublicId) {
-        await cloudinary.v2.uploader.destroy(oldPublicId);
+        try {
+          await cloudinary.v2.uploader.destroy(oldPublicId);
+        } catch (error) {
+          console.error('Failed to delete old image from Cloudinary:', error);
+        }
       }
     }
 
@@ -88,11 +92,11 @@ export async function POST(request, { params }) {
 function extractPublicId(url) {
   try {
     const parts = url.split('/');
-    const fileWithExtension = parts.pop();
-    const [publicId] = fileWithExtension.split('.');
-    return publicId;
-  } catch {
-    console.error('Error extracting public ID from URL');
+    const fileWithExtension = parts.pop(); // Extract the last part of the URL
+    const publicId = fileWithExtension.split('.')[0]; // Remove the file extension
+    return `${parts.join('/')}/${publicId}`.split('user_backgrounds/')[1];
+  } catch (error) {
+    console.error('Error extracting public ID from URL:', error);
     return null;
   }
 }
